@@ -763,15 +763,30 @@
             <div class="header">
                 <h1>📄 Gestion CV</h1>
                 <div class="header-actions">
-                    <button class="btn btn-primary">
-                        <i class="fas fa-upload"></i> Uploader
+                    <button id="uploadCVBtn" class="btn btn-primary">
+                        <i class="fas fa-upload"></i> Télécharger CV
                     </button>
                 </div>
             </div>
             <div class="chart-container">
-                <p style="color: var(--text-secondary); text-align: center; padding: 2rem;">
-                    📋 Upload et gestion du CV - À développer
-                </p>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Fichier</th>
+                            <th>Taille</th>
+                            <th>Date Upload</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cvTableBody">
+                        <tr>
+                            <td colspan="5" style="text-align: center; color: var(--text-secondary);">
+                                Aucun CV disponible
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </section>
 
@@ -959,6 +974,33 @@
                 <div class="form-actions">
                     <button type="button" class="btn-cancel" id="cancelEducationFormBtn">Annuler</button>
                     <button type="submit" class="btn-save">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- CV FORM MODAL -->
+    <div id="cvFormModal" class="form-modal">
+        <div class="form-modal-content">
+            <div class="form-modal-header">
+                <h2>Télécharger un CV</h2>
+                <button class="form-modal-close" id="closeCVFormBtn">&times;</button>
+            </div>
+            <form id="cvForm">
+                <div class="form-group">
+                    <label for="cvFile">Fichier CV (PDF, DOC, DOCX) *</label>
+                    <input type="file" id="cvFile" required accept=".pdf,.doc,.docx" />
+                    <small style="color: var(--text-secondary); margin-top: 0.5rem; display: block;">Max 5MB</small>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" id="cvActive" />
+                        <span>Utiliser comme CV principal</span>
+                    </label>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="cancelCVFormBtn">Annuler</button>
+                    <button type="submit" class="btn-save">Télécharger</button>
                 </div>
             </form>
         </div>
@@ -1378,6 +1420,158 @@
         document.getElementById('closeEducationFormBtn').addEventListener('click', closeEducationForm);
         document.getElementById('cancelEducationFormBtn').addEventListener('click', closeEducationForm);
 
+        // ============ CV CRUD ============
+        const CV_KEY = 'adminCVs';
+
+        function initializeCVs() {
+            if (!localStorage.getItem(CV_KEY)) {
+                const defaultCVs = [];
+                localStorage.setItem(CV_KEY, JSON.stringify(defaultCVs));
+            }
+        }
+
+        function getCVs() {
+            return JSON.parse(localStorage.getItem(CV_KEY) || '[]');
+        }
+
+        function saveCVs(cvs) {
+            localStorage.setItem(CV_KEY, JSON.stringify(cvs));
+            renderCVs();
+        }
+
+        function renderCVs() {
+            const cvs = getCVs();
+            const tbody = document.getElementById('cvTableBody');
+            
+            if (cvs.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-secondary);">Aucun CV disponible</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = cvs.map(cv => `
+                <tr>
+                    <td><strong>${cv.filename}</strong></td>
+                    <td>${formatFileSize(cv.size)}</td>
+                    <td>${new Date(cv.uploadDate).toLocaleDateString('fr-FR')}</td>
+                    <td>${cv.active ? '<span style="color: var(--primary-cyan);">Actif</span>' : '<span style="color: var(--text-secondary);">Inactif</span>'}</td>
+                    <td>
+                        <div style="display: flex; gap: 0.5rem;">
+                            ${!cv.active ? `<button class="btn-small btn-small-edit" onclick="setActiveCV('${cv.id}')">
+                                <i class="fas fa-check"></i> Activer
+                            </button>` : ''}
+                            <button class="btn-small btn-small-edit" onclick="downloadCV('${cv.id}')">
+                                <i class="fas fa-download"></i> Télécharger
+                            </button>
+                            <button class="btn-small btn-small-delete" onclick="deleteCV('${cv.id}')">
+                                <i class="fas fa-trash"></i> Supprimer
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openCVForm() {
+            document.getElementById('cvFormModal').classList.add('show');
+            document.getElementById('cvFile').value = '';
+            document.getElementById('cvActive').checked = false;
+        }
+
+        function closeCVForm() {
+            document.getElementById('cvFormModal').classList.remove('show');
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
+        }
+
+        document.getElementById('cvForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fileInput = document.getElementById('cvFile');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Veuillez sélectionner un fichier');
+                return;
+            }
+
+            // Check file size (5MB limit)
+            const maxSize = 5 * 1024 * 1024;
+            if (file.size > maxSize) {
+                alert('Le fichier est trop volumineux (max 5MB)');
+                return;
+            }
+
+            // Read file as base64
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const cvs = getCVs();
+                const active = document.getElementById('cvActive').checked;
+                
+                // If setting as active, deactivate others
+                if (active) {
+                    cvs.forEach(cv => cv.active = false);
+                }
+
+                // Add new CV
+                const newCV = {
+                    id: 'cv_' + Date.now(),
+                    filename: file.name,
+                    size: file.size,
+                    uploadDate: new Date().toISOString(),
+                    contentType: file.type,
+                    base64: event.target.result,
+                    active: active
+                };
+
+                cvs.push(newCV);
+                saveCVs(cvs);
+                closeCVForm();
+                alert('CV téléchargé avec succès!');
+            };
+            reader.readAsDataURL(file);
+        });
+
+        function downloadCV(id) {
+            const cvs = getCVs();
+            const cv = cvs.find(c => c.id === id);
+            
+            if (!cv) {
+                alert('CV non trouvé');
+                return;
+            }
+
+            // Create a link element and trigger download
+            const link = document.createElement('a');
+            link.href = cv.base64;
+            link.download = cv.filename;
+            link.click();
+        }
+
+        function setActiveCV(id) {
+            const cvs = getCVs();
+            cvs.forEach(cv => {
+                cv.active = cv.id === id;
+            });
+            saveCVs(cvs);
+            alert('CV défini comme principal!');
+        }
+
+        function deleteCV(id) {
+            if (confirm('Confirmer la suppression de ce CV?')) {
+                const cvs = getCVs().filter(cv => cv.id !== id);
+                saveCVs(cvs);
+            }
+        }
+
+        document.getElementById('uploadCVBtn').addEventListener('click', () => openCVForm());
+        document.getElementById('closeCVFormBtn').addEventListener('click', closeCVForm);
+        document.getElementById('cancelCVFormBtn').addEventListener('click', closeCVForm);
+
         // ============ NAVIGATION ============
         const navLinks = document.querySelectorAll('.nav-link');
         const sections = document.querySelectorAll('.section');
@@ -1401,6 +1595,8 @@
                         renderCertificates();
                     } else if (sectionId === 'education') {
                         renderEducation();
+                    } else if (sectionId === 'cv') {
+                        renderCVs();
                     }
                 }
             });
@@ -1420,6 +1616,8 @@
         renderCertificates();
         initializeEducation();
         renderEducation();
+        initializeCVs();
+        renderCVs();
         console.log('✅ Admin Dashboard CRUD loaded!');
     </script>
 </body>
