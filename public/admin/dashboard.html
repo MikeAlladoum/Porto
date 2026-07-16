@@ -860,25 +860,97 @@
         <!-- ANALYTICS SECTION -->
         <section id="analytics" class="section">
             <div class="header">
-                <h1>📊 Analytics</h1>
-                <div class="header-actions"></div>
+                <h1>📊 Analytics Dashboard</h1>
+                <button id="resetAnalyticsBtn" class="btn-small btn-small-edit">
+                    <i class="fas fa-redo"></i> Reset Stats
+                </button>
             </div>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-label">Page Views</div>
-                    <div class="stat-value">3.4K</div>
+
+            <!-- KEY METRICS -->
+            <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary-cyan); margin-bottom: 1rem; font-size: 1.1rem;">📈 Métriques Principales</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">👁️ Page Views</div>
+                        <div class="stat-value" id="analyticsPageViews">3.4K</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">📥 CV Téléchargés</div>
+                        <div class="stat-value" id="analyticsCVDownloads">248</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">👥 Visiteurs Uniques</div>
+                        <div class="stat-value" id="analyticsUniqueVisitors">1.2K</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">⏱️ Durée Session (Avg)</div>
+                        <div class="stat-value" id="analyticsSessionDuration">3m 42s</div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-label">Taux Conversion</div>
-                    <div class="stat-value">2.8%</div>
+            </div>
+
+            <!-- CONTENT STATS -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                <!-- PROJECTS STATS -->
+                <div style="background: rgba(255,255,255,0.03); backdrop-filter: blur(10px); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem;">
+                    <h3 style="color: var(--primary-cyan); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-project-diagram"></i> Projets
+                    </h3>
+                    <div style="space-y: 1rem;">
+                        <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border-color);">
+                            <span style="color: var(--text-secondary);">Total</span>
+                            <span id="analyticsTotalProjects" style="color: var(--primary-cyan); font-weight: 600;">6</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border-color);">
+                            <span style="color: var(--text-secondary);">À la une</span>
+                            <span id="analyticsFeaturedProjects" style="color: var(--primary-purple); font-weight: 600;">2</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 0.75rem 0;">
+                            <span style="color: var(--text-secondary);">Archivés</span>
+                            <span id="analyticsArchivedProjects" style="color: var(--primary-pink); font-weight: 600;">0</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-label">Durée Session</div>
-                    <div class="stat-value">3m 42s</div>
+
+                <!-- CONTENT STATS -->
+                <div style="background: rgba(255,255,255,0.03); backdrop-filter: blur(10px); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem;">
+                    <h3 style="color: var(--primary-cyan); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-file-alt"></i> Contenu
+                    </h3>
+                    <div style="space-y: 1rem;">
+                        <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border-color);">
+                            <span style="color: var(--text-secondary);">Certifications</span>
+                            <span id="analyticsTotalCerts" style="color: var(--primary-cyan); font-weight: 600;">4</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border-color);">
+                            <span style="color: var(--text-secondary);">Formations</span>
+                            <span id="analyticsTotalEducation" style="color: var(--primary-cyan); font-weight: 600;">6</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 0.75rem 0;">
+                            <span style="color: var(--text-secondary);">Avis</span>
+                            <span id="analyticsTotalTestimonials" style="color: var(--primary-cyan); font-weight: 600;">5</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-label">Bounce Rate</div>
-                    <div class="stat-value">31%</div>
+            </div>
+
+            <!-- MONTHLY ACTIVITY CHART -->
+            <div style="background: rgba(255,255,255,0.03); backdrop-filter: blur(10px); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem;">
+                <h3 style="color: var(--primary-cyan); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-chart-bar"></i> Activité Mensuelle
+                </h3>
+                <div style="height: 300px; display: flex; align-items: flex-end; justify-content: space-around; gap: 1rem; padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 8px; margin-top: 1rem;" id="monthlyActivityChart">
+                    <!-- Bars will be generated here -->
+                </div>
+            </div>
+
+            <!-- TECHNOLOGIES BREAKDOWN -->
+            <div style="margin-top: 2rem; background: rgba(255,255,255,0.03); backdrop-filter: blur(10px); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem;">
+                <h3 style="color: var(--primary-cyan); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-code"></i> Top Technos
+                </h3>
+                <div id="topTechnologies" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <!-- Tech cards will be generated here -->
                 </div>
             </div>
         </section>
@@ -1834,6 +1906,135 @@
         document.getElementById('closeTestimonialFormBtn').addEventListener('click', closeTestimonialForm);
         document.getElementById('cancelTestimonialFormBtn').addEventListener('click', closeTestimonialForm);
 
+        // ============ ANALYTICS ============
+        const ANALYTICS_KEY = 'adminAnalytics';
+
+        function initializeAnalytics() {
+            if (!localStorage.getItem(ANALYTICS_KEY)) {
+                const defaultAnalytics = {
+                    pageViews: 3400,
+                    cvDownloads: 248,
+                    uniqueVisitors: 1200,
+                    sessionDuration: '3m 42s',
+                    monthlyActivity: [120, 145, 180, 220, 195, 280, 250, 310, 290, 350, 330, 400],
+                    lastUpdated: new Date().toISOString()
+                };
+                localStorage.setItem(ANALYTICS_KEY, JSON.stringify(defaultAnalytics));
+            }
+        }
+
+        function getAnalytics() {
+            return JSON.parse(localStorage.getItem(ANALYTICS_KEY) || '{}');
+        }
+
+        function saveAnalytics(analytics) {
+            analytics.lastUpdated = new Date().toISOString();
+            localStorage.setItem(ANALYTICS_KEY, JSON.stringify(analytics));
+        }
+
+        function renderAnalytics() {
+            const analytics = getAnalytics();
+            const projects = getProjects();
+            const certificates = getCertificates();
+            const education = getEducation();
+            const testimonials = getTestimonials();
+            const cvs = getCVs();
+
+            // Update metrics
+            document.getElementById('analyticsPageViews').textContent = (analytics.pageViews || 3400).toLocaleString();
+            document.getElementById('analyticsCVDownloads').textContent = (analytics.cvDownloads || 248).toString();
+            document.getElementById('analyticsUniqueVisitors').textContent = ((analytics.uniqueVisitors || 1200) / 1000).toFixed(1) + 'K';
+            document.getElementById('analyticsSessionDuration').textContent = analytics.sessionDuration || '3m 42s';
+
+            // Content stats
+            document.getElementById('analyticsTotalProjects').textContent = projects.length;
+            document.getElementById('analyticsFeaturedProjects').textContent = projects.filter(p => p.featured).length;
+            document.getElementById('analyticsArchivedProjects').textContent = projects.filter(p => p.archived).length;
+            document.getElementById('analyticsTotalCerts').textContent = certificates.length;
+            document.getElementById('analyticsTotalEducation').textContent = education.length;
+            document.getElementById('analyticsTotalTestimonials').textContent = testimonials.length;
+
+            // Monthly activity chart
+            renderMonthlyActivityChart(analytics.monthlyActivity || [120, 145, 180, 220, 195, 280, 250, 310, 290, 350, 330, 400]);
+
+            // Top technologies
+            renderTopTechnologies(projects);
+        }
+
+        function renderMonthlyActivityChart(data) {
+            const chartContainer = document.getElementById('monthlyActivityChart');
+            const maxValue = Math.max(...data);
+            const months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'];
+
+            chartContainer.innerHTML = data.map((value, index) => {
+                const height = (value / maxValue) * 100;
+                return `
+                    <div style="display: flex; flex-direction: column; align-items: center; flex: 1;">
+                        <div style="
+                            height: ${height}%;
+                            width: 100%;
+                            background: linear-gradient(180deg, var(--primary-cyan), var(--primary-purple));
+                            border-radius: 8px 8px 0 0;
+                            min-height: 40px;
+                            position: relative;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                            border-top: 2px solid var(--primary-cyan);
+                        " title="${value}" onmouseover="this.style.transform='scaleY(1.1)'; this.style.filter='brightness(1.2)';" onmouseout="this.style.transform='scaleY(1)'; this.style.filter='brightness(1)';">
+                            <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 0.75rem; color: var(--text-secondary);">${value}</span>
+                        </div>
+                        <span style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-secondary);">${months[index]}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderTopTechnologies(projects) {
+            const techCount = {};
+            
+            projects.forEach(project => {
+                (project.tech || []).forEach(tech => {
+                    techCount[tech] = (techCount[tech] || 0) + 1;
+                });
+            });
+
+            const topTechs = Object.entries(techCount)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 8);
+
+            const container = document.getElementById('topTechnologies');
+            
+            if (topTechs.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-secondary); grid-column: 1/-1;">Pas de données disponibles</p>';
+                return;
+            }
+
+            container.innerHTML = topTechs.map(([tech, count]) => `
+                <div style="
+                    background: linear-gradient(135deg, rgba(0,217,255,0.1), rgba(179,68,255,0.1));
+                    border: 1px solid var(--border-color);
+                    border-radius: 8px;
+                    padding: 1rem;
+                    text-align: center;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                " onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 10px 30px rgba(0,217,255,0.2)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                    <div style="font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--primary-cyan); font-weight: 600;">${tech}</div>
+                    <div style="color: var(--text-secondary); font-size: 0.9rem;">Utilisé ${count}x</div>
+                </div>
+            `).join('');
+        }
+
+        // Reset Analytics
+        document.getElementById('resetAnalyticsBtn').addEventListener('click', () => {
+            if (confirm('Réinitialiser toutes les statistiques?')) {
+                localStorage.removeItem(ANALYTICS_KEY);
+                initializeAnalytics();
+                renderAnalytics();
+                alert('✅ Statistiques réinitialisées!');
+            }
+        });
+
         // ============ NAVIGATION ============
         const navLinks = document.querySelectorAll('.nav-link');
         const sections = document.querySelectorAll('.section');
@@ -1861,6 +2062,8 @@
                         renderCVs();
                     } else if (sectionId === 'testimonials') {
                         renderTestimonials();
+                    } else if (sectionId === 'analytics') {
+                        renderAnalytics();
                     }
                 }
             });
@@ -1884,7 +2087,9 @@
         renderCVs();
         initializeTestimonials();
         renderTestimonials();
-        console.log('✅ Admin Dashboard CRUD loaded!');
+        initializeAnalytics();
+        renderAnalytics();
+        console.log('✅ Admin Dashboard CRUD + Analytics loaded!');
     </script>
 </body>
 </html>
