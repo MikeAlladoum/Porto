@@ -727,17 +727,34 @@
         <!-- EDUCATION SECTION -->
         <section id="education" class="section">
             <div class="header">
-                <h1>🎓 Éducation</h1>
+                <h1>🎓 Gestion de l'Éducation</h1>
                 <div class="header-actions">
-                    <button class="btn btn-primary">
-                        <i class="fas fa-plus"></i> Ajouter
+                    <button class="btn btn-primary" id="addEducationBtn">
+                        <i class="fas fa-plus"></i> Nouvelle Formation
                     </button>
                 </div>
             </div>
-            <div class="chart-container">
-                <p style="color: var(--text-secondary); text-align: center; padding: 2rem;">
-                    📚 Gestion de l'éducation - À développer
-                </p>
+
+            <div id="educationContainer" class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Formation</th>
+                            <th>Institution</th>
+                            <th>Période</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="educationTableBody">
+                        <tr>
+                            <td colspan="5" class="empty-state">
+                                <i class="fas fa-inbox"></i><br/>
+                                Aucune formation. Créez-en une!
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </section>
 
@@ -897,6 +914,50 @@
                 </div>
                 <div class="form-actions">
                     <button type="button" class="btn-cancel" id="cancelCertificateFormBtn">Annuler</button>
+                    <button type="submit" class="btn-save">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- EDUCATION FORM MODAL -->
+    <div id="educationFormModal" class="form-modal">
+        <div class="form-modal-content">
+            <div class="form-modal-header">
+                <h2 id="educationFormTitle">Nouvelle Formation</h2>
+                <button class="form-modal-close" id="closeEducationFormBtn">&times;</button>
+            </div>
+            <form id="educationForm">
+                <div class="form-group">
+                    <label for="educationTitle">Titre de la Formation *</label>
+                    <input type="text" id="educationTitle" required placeholder="ex: Ingénieur Génie Logiciel" />
+                </div>
+                <div class="form-group">
+                    <label for="educationInstitution">Institution *</label>
+                    <input type="text" id="educationInstitution" required placeholder="ex: Institut Africain de Technologie" />
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label for="educationStartYear">Année de Début *</label>
+                        <input type="number" id="educationStartYear" required placeholder="ex: 2024" min="2000" max="2099" />
+                    </div>
+                    <div class="form-group">
+                        <label for="educationEndYear">Année de Fin</label>
+                        <input type="text" id="educationEndYear" placeholder="ex: 2025 ou Présent" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="educationDescription">Description *</label>
+                    <textarea id="educationDescription" required placeholder="Description de la formation..." style="height: 100px;"></textarea>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" id="educationArchived" />
+                        <span>Archivé</span>
+                    </label>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="cancelEducationFormBtn">Annuler</button>
                     <button type="submit" class="btn-save">Enregistrer</button>
                 </div>
             </form>
@@ -1187,6 +1248,136 @@
         document.getElementById('closeCertificateFormBtn').addEventListener('click', closeCertificateForm);
         document.getElementById('cancelCertificateFormBtn').addEventListener('click', closeCertificateForm);
 
+        // ============ EDUCATION CRUD ============
+        const EDUCATION_KEY = 'adminEducation';
+
+        function initializeEducation() {
+            const existing = localStorage.getItem(EDUCATION_KEY);
+            if (!existing) {
+                const defaultEducation = [
+                    { id: 1, title: 'Ingénieur Génie Logiciel', institution: 'Institut Africain de Technologie', startYear: 2024, endYear: 'Présent', description: 'Formation complète en génie logiciel avec spécialisation en développement blockchain et systèmes décentralisés.', archived: false },
+                    { id: 2, title: 'Blockchain Specialization', institution: 'Coursera', startYear: 2024, endYear: '2024', description: 'Certification complète en technologie blockchain, smart contracts et protocoles décentralisés.', archived: false },
+                    { id: 3, title: 'Harvard CS50', institution: 'Harvard University', startYear: 2023, endYear: '2024', description: 'Cours d\'informatique de haut niveau couvrant les fondamentaux de la programmation et des structures de données.', archived: false },
+                    { id: 4, title: 'Solidity Advanced', institution: 'Udemy', startYear: 2024, endYear: '2024', description: 'Cours avancé Solidity avec focus sur sécurité, optimisation des gas et best practices Web3.', archived: false },
+                    { id: 5, title: 'Full Stack Web Development', institution: 'Udemy', startYear: 2023, endYear: '2023', description: 'Mastermind Full Stack: React, Node.js, MongoDB avec déploiement production et best practices.', archived: false },
+                    { id: 6, title: 'Baccalauréat Informatique', institution: 'Lycée Moderne Lomé', startYear: 2022, endYear: '2022', description: 'Diplôme d\'études secondaires avec spécialisation en informatique et sciences mathématiques.', archived: false }
+                ];
+                localStorage.setItem(EDUCATION_KEY, JSON.stringify(defaultEducation));
+            }
+        }
+
+        function getEducation() {
+            return JSON.parse(localStorage.getItem(EDUCATION_KEY) || '[]');
+        }
+
+        function saveEducation(education) {
+            localStorage.setItem(EDUCATION_KEY, JSON.stringify(education));
+            renderEducation();
+        }
+
+        function renderEducation() {
+            const education = getEducation().filter(e => !e.archived);
+            const tbody = document.getElementById('educationTableBody');
+
+            if (education.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="empty-state"><i class="fas fa-inbox"></i><br/>Aucune formation active</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = education.map(e => `
+                <tr>
+                    <td><strong>${e.title}</strong></td>
+                    <td>${e.institution}</td>
+                    <td>${e.startYear} - ${e.endYear}</td>
+                    <td><small>${e.archived ? 'Archivé' : 'Actif'}</small></td>
+                    <td>
+                        <div class="project-actions">
+                            <button class="btn-small btn-small-cyan" onclick="editEducation(${e.id})">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn-small btn-small-delete" onclick="deleteEducation(${e.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        let currentEducationId = null;
+
+        function openEducationForm(educationId = null) {
+            const modal = document.getElementById('educationFormModal');
+            const title = document.getElementById('educationFormTitle');
+            
+            if (educationId) {
+                const education = getEducation();
+                const edu = education.find(e => e.id === educationId);
+                if (edu) {
+                    currentEducationId = educationId;
+                    title.textContent = 'Éditer Formation';
+                    document.getElementById('educationTitle').value = edu.title;
+                    document.getElementById('educationInstitution').value = edu.institution;
+                    document.getElementById('educationStartYear').value = edu.startYear;
+                    document.getElementById('educationEndYear').value = edu.endYear;
+                    document.getElementById('educationDescription').value = edu.description;
+                    document.getElementById('educationArchived').checked = edu.archived;
+                }
+            } else {
+                currentEducationId = null;
+                title.textContent = 'Nouvelle Formation';
+                document.getElementById('educationForm').reset();
+            }
+            modal.classList.add('show');
+        }
+
+        function closeEducationForm() {
+            document.getElementById('educationFormModal').classList.remove('show');
+            currentEducationId = null;
+        }
+
+        document.getElementById('educationForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const education = getEducation();
+            
+            const educationData = {
+                title: document.getElementById('educationTitle').value,
+                institution: document.getElementById('educationInstitution').value,
+                startYear: parseInt(document.getElementById('educationStartYear').value),
+                endYear: document.getElementById('educationEndYear').value,
+                description: document.getElementById('educationDescription').value,
+                archived: document.getElementById('educationArchived').checked
+            };
+
+            if (currentEducationId) {
+                const idx = education.findIndex(e => e.id === currentEducationId);
+                if (idx !== -1) {
+                    education[idx] = { ...education[idx], ...educationData };
+                }
+            } else {
+                educationData.id = Math.max(0, ...education.map(e => e.id)) + 1;
+                education.push(educationData);
+            }
+
+            saveEducation(education);
+            closeEducationForm();
+        });
+
+        function editEducation(id) {
+            openEducationForm(id);
+        }
+
+        function deleteEducation(id) {
+            if (confirm('Confirmer la suppression?')) {
+                const education = getEducation().filter(e => e.id !== id);
+                saveEducation(education);
+            }
+        }
+
+        document.getElementById('addEducationBtn').addEventListener('click', () => openEducationForm());
+        document.getElementById('closeEducationFormBtn').addEventListener('click', closeEducationForm);
+        document.getElementById('cancelEducationFormBtn').addEventListener('click', closeEducationForm);
+
         // ============ NAVIGATION ============
         const navLinks = document.querySelectorAll('.nav-link');
         const sections = document.querySelectorAll('.section');
@@ -1208,6 +1399,8 @@
                         renderProjects();
                     } else if (sectionId === 'certificates') {
                         renderCertificates();
+                    } else if (sectionId === 'education') {
+                        renderEducation();
                     }
                 }
             });
@@ -1225,6 +1418,8 @@
         renderProjects();
         initializeCertificates();
         renderCertificates();
+        initializeEducation();
+        renderEducation();
         console.log('✅ Admin Dashboard CRUD loaded!');
     </script>
 </body>
