@@ -2369,5 +2369,218 @@
         renderAnalytics();
         console.log('✅ Admin Dashboard CRUD + Analytics loaded!');
     </script>
+
+    <!-- Supabase Integration -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/js/supabase-config.js"></script>
+    <script src="/js/supabase-dashboard-integration.js"></script>
+    
+    <!-- Dashboard Supabase Sync -->
+    <script>
+        /**
+         * Patch des fonctions get/save pour utiliser Supabase
+         * Système de cache + synchronisation asynchrone
+         */
+
+        // Map des fonctions originales (avant patch)
+        const originalGet = {
+            projects: getProjects,
+            certificates: getCertificates,
+            education: getEducation,
+            cvs: getCVs,
+            testimonials: getTestimonials,
+            analytics: getAnalytics
+        };
+
+        const originalSave = {
+            projects: saveProjects,
+            certificates: saveCertificates,
+            education: saveEducation,
+            cvs: saveCVs,
+            testimonials: saveTestimonials,
+            analytics: saveAnalytics
+        };
+
+        // Patch: getProjects
+        function getProjects() {
+            // Utiliser localStorage comme cache rapide
+            const cached = JSON.parse(localStorage.getItem('projects') || '[]');
+            // Sync en arrière-plan (non-bloquant)
+            if (USE_SUPABASE && supabaseReady) {
+                getProjectsData().then(data => {
+                    if (data && data.length > 0) {
+                        localStorage.setItem('projects', JSON.stringify(data));
+                    }
+                });
+            }
+            return cached;
+        }
+
+        // Patch: saveProjects
+        function saveProjects(projects) {
+            // Sauvegarder en localStorage d'abord (rapide)
+            localStorage.setItem('projects', JSON.stringify(projects));
+            // Sync avec Supabase en arrière-plan
+            if (USE_SUPABASE && supabaseReady) {
+                saveProjectsData(projects).catch(err => {
+                    console.error('Erreur sync Supabase projects:', err);
+                });
+            }
+        }
+
+        // Patch: getCertificates
+        function getCertificates() {
+            const cached = JSON.parse(localStorage.getItem('certificates') || '[]');
+            if (USE_SUPABASE && supabaseReady) {
+                getCertificatesData().then(data => {
+                    if (data && data.length > 0) {
+                        localStorage.setItem('certificates', JSON.stringify(data));
+                    }
+                });
+            }
+            return cached;
+        }
+
+        // Patch: saveCertificates
+        function saveCertificates(certificates) {
+            localStorage.setItem('certificates', JSON.stringify(certificates));
+            if (USE_SUPABASE && supabaseReady) {
+                saveCertificatesData(certificates).catch(err => {
+                    console.error('Erreur sync Supabase certificates:', err);
+                });
+            }
+        }
+
+        // Patch: getEducation
+        function getEducation() {
+            const cached = JSON.parse(localStorage.getItem('education') || '[]');
+            if (USE_SUPABASE && supabaseReady) {
+                getEducationData().then(data => {
+                    if (data && data.length > 0) {
+                        localStorage.setItem('education', JSON.stringify(data));
+                    }
+                });
+            }
+            return cached;
+        }
+
+        // Patch: saveEducation
+        function saveEducation(education) {
+            localStorage.setItem('education', JSON.stringify(education));
+            if (USE_SUPABASE && supabaseReady) {
+                saveEducationData(education).catch(err => {
+                    console.error('Erreur sync Supabase education:', err);
+                });
+            }
+        }
+
+        // Patch: getCVs
+        function getCVs() {
+            const cached = JSON.parse(localStorage.getItem('cvs') || '[]');
+            if (USE_SUPABASE && supabaseReady) {
+                getCVsData().then(data => {
+                    if (data && data.length > 0) {
+                        localStorage.setItem('cvs', JSON.stringify(data));
+                    }
+                });
+            }
+            return cached;
+        }
+
+        // Patch: saveCVs
+        function saveCVs(cvs) {
+            localStorage.setItem('cvs', JSON.stringify(cvs));
+            if (USE_SUPABASE && supabaseReady) {
+                saveCVsData(cvs).catch(err => {
+                    console.error('Erreur sync Supabase cvs:', err);
+                });
+            }
+        }
+
+        // Patch: getTestimonials
+        function getTestimonials() {
+            const cached = JSON.parse(localStorage.getItem('testimonials') || '[]');
+            if (USE_SUPABASE && supabaseReady) {
+                getTestimonialsData().then(data => {
+                    if (data && data.length > 0) {
+                        localStorage.setItem('testimonials', JSON.stringify(data));
+                    }
+                });
+            }
+            return cached;
+        }
+
+        // Patch: saveTestimonials
+        function saveTestimonials(testimonials) {
+            localStorage.setItem('testimonials', JSON.stringify(testimonials));
+            if (USE_SUPABASE && supabaseReady) {
+                saveTestimonialsData(testimonials).catch(err => {
+                    console.error('Erreur sync Supabase testimonials:', err);
+                });
+            }
+        }
+
+        // Patch: getAnalytics
+        function getAnalytics() {
+            const cached = JSON.parse(localStorage.getItem('analytics') || '{}');
+            if (USE_SUPABASE && supabaseReady) {
+                getAnalyticsData().then(data => {
+                    if (data && Object.keys(data).length > 0) {
+                        localStorage.setItem('analytics', JSON.stringify(data));
+                    }
+                });
+            }
+            return cached;
+        }
+
+        // Patch: saveAnalytics
+        function saveAnalytics(analytics) {
+            analytics.lastUpdated = new Date().toISOString();
+            localStorage.setItem('analytics', JSON.stringify(analytics));
+            if (USE_SUPABASE && supabaseReady) {
+                saveAnalyticsData(analytics).catch(err => {
+                    console.error('Erreur sync Supabase analytics:', err);
+                });
+            }
+        }
+
+        // Status
+        console.log('✅ Supabase Integration Patches Applied');
+        
+        // Attendre l'initialisation de Supabase
+        setTimeout(async () => {
+            if (USE_SUPABASE && supabaseReady) {
+                console.log('🔄 Syncing Supabase data...');
+                
+                // Charger les données de Supabase
+                const [projects, certs, edu, cvs, testimonials, analytics] = await Promise.all([
+                    getProjectsData(),
+                    getCertificatesData(),
+                    getEducationData(),
+                    getCVsData(),
+                    getTestimonialsData(),
+                    getAnalyticsData()
+                ]);
+
+                // Mettre à jour le localStorage
+                if (projects.length > 0) localStorage.setItem('projects', JSON.stringify(projects));
+                if (certs.length > 0) localStorage.setItem('certificates', JSON.stringify(certs));
+                if (edu.length > 0) localStorage.setItem('education', JSON.stringify(edu));
+                if (cvs.length > 0) localStorage.setItem('cvs', JSON.stringify(cvs));
+                if (testimonials.length > 0) localStorage.setItem('testimonials', JSON.stringify(testimonials));
+                if (Object.keys(analytics).length > 0) localStorage.setItem('analytics', JSON.stringify(analytics));
+
+                console.log('✅ Supabase Sync Complete');
+                
+                // Recharger les vues
+                renderProjects();
+                renderCertificates();
+                renderEducation();
+                renderCVs();
+                renderTestimonials();
+                renderAnalytics();
+            }
+        }, 1500);
+    </script>
 </body>
 </html>
