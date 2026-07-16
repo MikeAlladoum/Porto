@@ -320,17 +320,25 @@
         }
 
         .hero-image-pic img {
+            position: absolute;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            animation: fadeImageToggle 12s infinite;
+            opacity: 1;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        .hero-image-pic img.hidden {
+            opacity: 0;
+            pointer-events: none;
         }
 
         .hero-image-pic::before {
-            content: '👨‍💻';
-            font-size: 8rem;
+            content: '';
             position: absolute;
-            animation: fadeImageToggle 12s infinite reverse;
+            width: 0;
+            height: 0;
+            z-index: -1;
         }
 
         .hero-name {
@@ -768,8 +776,9 @@
                     <div class="hero-image">
                         <div class="hero-image-wrapper">
                             <div class="hero-image-glow"></div>
-                            <div class="hero-image-pic">
-                                <img src="/assets/avatar.svg" alt="Mike Alladoum" />
+                            <div class="hero-image-pic" id="heroImagePic">
+                                <img id="avatarImg" src="/assets/avatar.svg" alt="Mike Alladoum - Avatar" />
+                                <img id="photoImg" src="/image.jpg" alt="Mike Alladoum - Photo" class="hidden" />
                             </div>
                         </div>
                         <div class="hero-name">
@@ -1404,6 +1413,41 @@
         }
 
         console.log('✅ Portfolio chargé avec succès!');
+
+        // ============ HERO IMAGE ROTATION ============
+        function initHeroImageRotation() {
+            const avatarImg = document.getElementById('avatarImg');
+            const photoImg = document.getElementById('photoImg');
+            
+            if (!avatarImg || !photoImg) return;
+            
+            let showingAvatar = true;
+            const rotationInterval = 6000; // 6 seconds
+            
+            function rotateImages() {
+                if (showingAvatar) {
+                    // Switch to photo
+                    avatarImg.classList.add('hidden');
+                    photoImg.classList.remove('hidden');
+                    showingAvatar = false;
+                } else {
+                    // Switch to avatar
+                    photoImg.classList.add('hidden');
+                    avatarImg.classList.remove('hidden');
+                    showingAvatar = true;
+                }
+            }
+            
+            // Start rotation after initial display
+            setInterval(rotateImages, rotationInterval);
+        }
+        
+        // Initialize on page load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initHeroImageRotation);
+        } else {
+            initHeroImageRotation();
+        }
     </script>
 </body>
 </html>
