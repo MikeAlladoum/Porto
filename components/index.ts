@@ -1,0 +1,11 @@
+export { HeroSection } from './HeroSection';
+export { AboutSection } from './AboutSection';
+export { TechStackSection } from './TechStackSection';
+export { ProjectsSection } from './ProjectsSection';
+export { CertificationsSection } from './CertificationsSection';
+export { ExperienceSection } from './ExperienceSection';
+export { TestimonialsSection } from './TestimonialsSection';
+export { ContactSection } from './ContactSection';
+export { Header } from './Header';
+export { Footer } from './Footer';
+export { GradientText, NeonButton, Card, SectionTitle } from './UI';

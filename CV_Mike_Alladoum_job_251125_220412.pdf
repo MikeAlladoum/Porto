@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV - DJEKOURMAN ALLADOUM MIKE</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1f3a 0%, #0a0e27 100%);
+            color: #333;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .header {
+            border-bottom: 3px solid #00d9ff;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            color: #0a0e27;
+            margin-bottom: 5px;
+        }
+        .header p {
+            font-size: 1.2em;
+            color: #b344ff;
+            margin: 5px 0;
+        }
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        .contact-info span {
+            color: #666;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section h2 {
+            background: linear-gradient(135deg, #00d9ff, #b344ff);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        .subsection {
+            margin-bottom: 15px;
+            padding-left: 20px;
+            border-left: 3px solid #00d9ff;
+        }
+        .subsection h3 {
+            color: #0a0e27;
+            margin-bottom: 5px;
+        }
+        .subsection .meta {
+            color: #b344ff;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .subsection p {
+            color: #666;
+            line-height: 1.6;
+            margin: 5px 0;
+        }
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        .skill-box {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #ff344f;
+        }
+        .skill-box h4 {
+            color: #0a0e27;
+            margin-bottom: 8px;
+        }
+        .skill-box p {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        .print-button {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+        }
+        .print-button button {
+            background: linear-gradient(135deg, #00d9ff, #b344ff);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .print-button button:hover {
+            transform: scale(1.05);
+        }
+        @media print {
+            body { background: white; }
+            .print-button { display: none; }
+            .container { box-shadow: none; }
+        }
+        @media (max-width: 768px) {
+            .container { padding: 20px; }
+            .header h1 { font-size: 1.8em; }
+            .contact-info { gap: 10px; font-size: 0.8em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>DJEKOURMAN ALLADOUM MIKE</h1>
+            <p>Web3 Developer & Blockchain Engineer</p>
+            <div class="contact-info">
+                <span>📱 +228 92361187</span>
+                <span>📧 contact@mikealladoum.com</span>
+                <span>🌐 mikealladoum.com</span>
+                <span>📍 Lomé, Togo</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>👋 PROFIL PROFESSIONNEL</h2>
+            <p>Développeur blockchain junior passionné par la création de solutions Web3 sécurisées et innovantes. Fort d'une expertise en Solidity, Solana et protocoles DeFi, je suis engagé dans le développement d'applications décentralisées de haute qualité. Doté d'une capacité à livrer des projets complexes avec attention au détail.</p>
+        </div>
+
+        <div class="section">
+            <h2>🛠️ COMPÉTENCES TECHNIQUES</h2>
+            <div class="skills-grid">
+                <div class="skill-box">
+                    <h4>🔗 Blockchain</h4>
+                    <p>Solidity • Web3.js • Ethers.js • Solana • WalletConnect • Smart Contracts • DeFi Protocols</p>
+                </div>
+                <div class="skill-box">
+                    <h4>💻 Frontend</h4>
+                    <p>React • Next.js • TypeScript • Tailwind CSS • Framer Motion • JavaScript • Responsive Design</p>
+                </div>
+                <div class="skill-box">
+                    <h4>⚙️ Backend</h4>
+                    <p>Node.js • Python • PostgreSQL • MySQL • Hardhat • REST APIs • Server Development</p>
+                </div>
+                <div class="skill-box">
+                    <h4>📚 Autres</h4>
+                    <p>Git/GitHub • Linux • Docker • Deployment • DevOps • Agile Methodology</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📁 PROJETS MAJEURS</h2>
+            <div class="subsection">
+                <h3>KOYA - Solana DApp</h3>
+                <div class="meta">2024 | Solana, React, Web3</div>
+                <p>✓ Application décentralisée complète sur Solana</p>
+                <p>✓ Interface React intuitive avec intégration Web3</p>
+                <p>✓ Gestion des portefeuilles et transactions</p>
+                <p><strong>GitHub:</strong> github.com/MikeAlladoum/koya</p>
+            </div>
+            <div class="subsection">
+                <h3>Sentinel Liquidation - Protocole DeFi</h3>
+                <div class="meta">2024 | Solidity, Smart Contracts, DeFi</div>
+                <p>✓ Système de liquidation automatisé pour DeFi</p>
+                <p>✓ Contrats intelligents avec gestion avancée des risques</p>
+                <p>✓ Systèmes de monitoring et d'alerte</p>
+                <p><strong>GitHub:</strong> github.com/MikeAlladoum/sentinel-liquidation</p>
+            </div>
+            <div class="subsection">
+                <h3>WalletConnect DApp - Application Multi-Chain</h3>
+                <div class="meta">2024 | React, WalletConnect, Ethers.js</div>
+                <p>✓ Application compatible multi-blockchain</p>
+                <p>✓ Intégration WalletConnect complète</p>
+                <p>✓ Interface responsive pour plusieurs blockchains</p>
+                <p><strong>GitHub:</strong> github.com/MikeAlladoum/walletconnect-dapp</p>
+            </div>
+            <div class="subsection">
+                <h3>DAPP Enchères - Plateforme de Vente aux Enchères</h3>
+                <div class="meta">2024 | Solidity, Next.js, Ethereum</div>
+                <p>✓ Plateforme décentralisée sur Ethereum</p>
+                <p>✓ Système d'enchères avec escrow</p>
+                <p>✓ Interface utilisateur conviviale</p>
+                <p><strong>GitHub:</strong> github.com/MikeAlladoum/dapp-encheres</p>
+            </div>
+            <div class="subsection">
+                <h3>Sales Analytics - Système de Données</h3>
+                <div class="meta">2024 | Python, Analytics, Data</div>
+                <p>✓ Plateforme d'analyse de données</p>
+                <p>✓ Tableaux de bord de visualisation</p>
+                <p>✓ Systèmes de reporting</p>
+                <p><strong>GitHub:</strong> github.com/MikeAlladoum/sales-analytics</p>
+            </div>
+            <div class="subsection">
+                <h3>Temperature System - Application IoT</h3>
+                <div class="meta">2024 | Node.js, IoT, Real-time</div>
+                <p>✓ Système de monitoring en temps réel</p>
+                <p>✓ Mécanismes d'alerte</p>
+                <p>✓ Analyse de données historiques</p>
+                <p><strong>GitHub:</strong> github.com/MikeAlladoum/temperature-system</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎓 CERTIFICATIONS & FORMATIONS</h2>
+            <div class="subsection">
+                <h3>Blockchain Specialization</h3>
+                <div class="meta">Coursera</div>
+                <p>Spécialisation complète en technologies blockchain</p>
+            </div>
+            <div class="subsection">
+                <h3>Binance Academy - Blockchain Fundamentals</h3>
+                <div class="meta">Binance Academy</div>
+                <p>Fondamentaux de la blockchain et des cryptomonnaies</p>
+            </div>
+            <div class="subsection">
+                <h3>Dev3PACK - Web3 Development</h3>
+                <div class="meta">Dev3PACK</div>
+                <p>Programme complet de développement Web3</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>💬 TÉMOIGNAGES</h2>
+            <p><strong>"Mike démontre un potentiel exceptionnel en développement blockchain"</strong><br>- Prof. Jean-Pierre</p>
+            <p><strong>"Contrats intelligents de qualité, livraison fiable. Un développeur de confiance"</strong><br>- Sarah Mensah, Blockchain Engineer</p>
+            <p><strong>"L'un des développeurs les plus dévoués que je connaisse"</strong><br>- David Kofi</p>
+            <p><strong>"Futur leader dans les systèmes décentralisés"</strong><br>- Dr. Amara Okafor, Blockchain Mentor</p>
+        </div>
+
+        <div class="print-button">
+            <button onclick="window.print()">🖨️ Imprimer / Télécharger PDF</button>
+        </div>
+    </div>
+</body>
+</html>

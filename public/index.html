@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mike Alladoum - Blockchain Developer & Web3 Engineer</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ============ CSS VARIABLES ============ */
+        :root {
+            --primary-cyan: #00d9ff;
+            --primary-purple: #b344ff;
+            --primary-pink: #ff344f;
+            --dark-bg: #0a0e27;
+            --dark-secondary: #1a1f3a;
+            --text-primary: #e0e0ff;
+            --text-secondary: #b0b0d0;
+            --border-color: rgba(0, 217, 255, 0.2);
+            --shadow-glow: 0 0 30px rgba(0, 217, 255, 0.3);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ============ RESET & BASE ============ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--dark-secondary) 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ============ NAVBAR FIXE ============ */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .navbar-menu {
+            display: flex;
+            list-style: none;
+            gap: 0;
+            align-items: center;
+        }
+
+        .navbar-menu a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            transition: var(--transition);
+            font-weight: 500;
+            font-size: 0.95rem;
+            border-bottom: 2px solid transparent;
+            position: relative;
+        }
+
+        .navbar-menu a:hover,
+        .navbar-menu a.active {
+            color: var(--primary-cyan);
+            border-bottom-color: var(--primary-cyan);
+        }
+
+        /* Admin Link Style */
+        .navbar-menu .admin-link {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-pink));
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            color: #fff !important;
+            border-bottom: none;
+        }
+
+        .navbar-menu .admin-link:hover {
+            border-bottom: none;
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .navbar-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+        }
+
+        /* ============ WHATSAPP BUTTON ============ */
+        .whatsapp-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #25d366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            font-size: 1.8rem;
+            z-index: 999;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            transition: var(--transition);
+            animation: pulse-whatsapp 2s infinite;
+        }
+
+        .whatsapp-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(37, 211, 102, 0.6);
+            animation: none;
+        }
+
+        @keyframes pulse-whatsapp {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* ============ MAIN CONTENT ============ */
+        main {
+            margin-top: 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* ============ SECTION HEROS ============ */
+        #accueil {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .hero-text h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple), var(--primary-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero-text .subtitle {
+            font-size: 1.3rem;
+            color: var(--primary-purple);
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero-text .description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .cv-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-cyan), #0099cc);
+            color: var(--dark-bg);
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(0, 217, 255, 0.6);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--primary-purple);
+            color: var(--primary-purple);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(179, 68, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        /* HERO IMAGE */
+        .hero-image {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .hero-image-wrapper {
+            position: relative;
+            width: 300px;
+            height: 300px;
+        }
+
+        .hero-image-glow {
+            position: absolute;
+            inset: -20px;
+            background: conic-gradient(from 0deg, var(--primary-cyan), var(--primary-purple), var(--primary-pink), var(--primary-cyan));
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: rotate-glow 8s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes rotate-glow {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fadeImageToggle {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .hero-image-pic {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid var(--primary-cyan);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--dark-secondary);
+            z-index: 2;
+        }
+
+        .hero-image-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            animation: fadeImageToggle 12s infinite;
+        }
+
+        .hero-image-pic::before {
+            content: '👨‍💻';
+            font-size: 8rem;
+            position: absolute;
+            animation: fadeImageToggle 12s infinite reverse;
+        }
+
+        .hero-name {
+            text-align: center;
+            margin-top: 2rem;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .hero-name h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-name .role {
+            color: var(--primary-pink);
+            font-weight: 600;
+        }
+
+        /* ============ ANIMATIONS ============ */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============ SECTION GENERIC ============ */
+        section {
+            padding: 6rem 2rem;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ============ SECTION PROJETS ============ */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(0, 217, 255, 0.15), transparent);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .project-card:hover {
+            border-color: rgba(0, 217, 255, 0.6);
+            background: rgba(0, 217, 255, 0.05);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .project-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            color: var(--primary-pink);
+            position: relative;
+            z-index: 2;
+        }
+
+        .project-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .tech-badge {
+            background: rgba(179, 68, 255, 0.2);
+            color: var(--primary-purple);
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            border: 1px solid var(--primary-purple);
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-cyan);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            position: relative;
+            z-index: 2;
+        }
+
+        .project-link:hover {
+            color: var(--primary-pink);
+            transform: translateX(5px);
+        }
+
+        /* ============ FOOTER ============ */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+            background: rgba(10, 14, 39, 0.5);
+        }
+
+        footer p {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--primary-cyan);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-purple);
+        }
+
+        /* ============ CV MODAL ============ */
+        .cv-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .cv-modal-content {
+            background: var(--dark-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            padding: 2rem;
+            box-shadow: 0 0 50px rgba(0, 217, 255, 0.3);
+        }
+
+        .cv-modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 2001;
+        }
+
+        .cv-modal-close:hover {
+            color: var(--primary-cyan);
+        }
+
+        .cv-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .cv-modal-header h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--primary-cyan);
+            margin: 0;
+        }
+
+        .cv-content {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .cv-content h3 {
+            color: var(--primary-purple);
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .cv-content p {
+            margin-bottom: 0.5rem;
+        }
+
+        .cv-content ul {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cv-content li {
+            margin-bottom: 0.3rem;
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .navbar-menu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(10, 14, 39, 0.98);
+                flex-direction: column;
+                gap: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-out;
+            }
+
+            .navbar-menu.active {
+                max-height: 500px;
+            }
+
+            .navbar-menu a {
+                width: 100%;
+                padding: 1rem;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .navbar-toggle {
+                display: flex;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+
+            .hero-text .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .cv-buttons {
+                justify-content: center;
+            }
+
+            .hero-image {
+                order: -1;
+            }
+
+            .hero-image-wrapper {
+                width: 250px;
+                height: 250px;
+                margin: 0 auto;
+            }
+
+            .hero-image-glow {
+                inset: -15px;
+            }
+
+            .whatsapp-btn {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                right: 20px;
+                font-size: 1.5rem;
+            }
+
+            section {
+                padding: 3rem 1rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+                margin-bottom: 2rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-text h1 {
+                font-size: 1.5rem;
+            }
+
+            .hero-text .subtitle {
+                font-size: 1rem;
+            }
+
+            .cv-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .hero-image-wrapper {
+                width: 200px;
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR FIXE -->
+    <nav class="navbar">
+        <a href="#accueil" class="navbar-logo">
+            <i class="fas fa-rocket"></i> Mike
+        </a>
+        <ul class="navbar-menu">
+            <li><a href="#accueil" class="nav-link active">Accueil</a></li>
+            <li><a href="#apropos" class="nav-link">À propos</a></li>
+            <li><a href="#skills" class="nav-link">Skills</a></li>
+            <li><a href="#projets" class="nav-link">Projets</a></li>
+            <li><a href="#certifications" class="nav-link">Certifications</a></li>
+            <li><a href="#services" class="nav-link">Services</a></li>
+            <li><a href="#avis" class="nav-link">Avis</a></li>
+            <li><a href="#faq" class="nav-link">FAQ</a></li>
+            <li><a href="#contact" class="nav-link">Contact</a></li>
+            <li><a href="/admin/login" class="nav-link admin-link">🔐 Dashboard</a></li>
+        </ul>
+        <button class="navbar-toggle" id="navbar-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    <!-- WHATSAPP BUTTON -->
+    <a href="https://wa.me/22892361187" class="whatsapp-btn" target="_blank" title="Contactez-moi sur WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <main>
+        <!-- SECTION HERO -->
+        <section id="accueil">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1>Mike Alladoum</h1>
+                        <p class="subtitle">Web3 Developer & Blockchain Engineer</p>
+                        <p class="description">
+                            Développeur blockchain avec 2 ans d'expérience. Spécialiste en Solidity, Solana, et protocoles DeFi. 
+                            Je crée des solutions Web3 sécurisées et performantes pour l'avenir décentralisé.
+                        </p>
+                        <div class="cv-buttons">
+                            <button id="viewCvBtn" class="btn btn-primary">
+                                <i class="fas fa-file-pdf"></i> Voir mon CV
+                            </button>
+                            <a href="#contact" class="btn btn-secondary">
+                                <i class="fas fa-envelope"></i> Contact
+                            </a>
+                        </div>
+                    </div>
+                    <div class="hero-image">
+                        <div class="hero-image-wrapper">
+                            <div class="hero-image-glow"></div>
+                            <div class="hero-image-pic">
+                                <img src="/image.jpg" alt="Mike Alladoum" />
+                            </div>
+                        </div>
+                        <div class="hero-name">
+                            <h2>Mike Alladoum</h2>
+                            <p class="role">Développeur Blockchain | 2 ans d'expérience</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION À PROPOS -->
+        <section id="apropos" style="background: rgba(26, 31, 58, 0.5);">
+            <div class="container">
+                <h2 class="section-title">À Propos</h2>
+                <p style="text-align: center; color: var(--text-secondary); max-width: 700px; margin: 0 auto;">
+                    Développeur blockchain avec 2 ans d'expérience basé à Lomé, Togo. Passionné par les technologies décentralisées 
+                    et la construction d'applications Web3 sécurisées. Je m'engage à repousser les limites de ce qui est possible 
+                    dans l'écosystème blockchain et à contribuer à l'adoption massive de la technologie.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION SKILLS -->
+        <section id="skills">
+            <div class="container">
+                <h2 class="section-title">Compétences</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <h3>🔗 Blockchain</h3>
+                        <div class="tech-stack">
+                            <span class="tech-badge">Solidity</span>
+                            <span class="tech-badge">Web3.js</span>
+                            <span class="tech-badge">Ethers.js</span>
+                            <span class="tech-badge">Solana</span>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <h3>💻 Frontend</h3>
+                        <div class="tech-stack">
+                            <span class="tech-badge">React</span>
+                            <span class="tech-badge">Next.js</span>
+                            <span class="tech-badge">TypeScript</span>
+                            <span class="tech-badge">Tailwind</span>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <h3>⚙️ Backend</h3>
+                        <div class="tech-stack">
+                            <span class="tech-badge">Node.js</span>
+                            <span class="tech-badge">Python</span>
+                            <span class="tech-badge">PostgreSQL</span>
+                            <span class="tech-badge">Hardhat</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION PROJETS -->
+        <section id="projets" style="background: rgba(26, 31, 58, 0.5);">
+            <div class="container">
+                <h2 class="section-title">Mes Projets</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <h3>🎯 KOYA</h3>
+                        <p>Application Solana DApp avec interface utilisateur intuitives et intégration wallet</p>
+                        <div class="tech-stack">
+                            <span class="tech-badge">Solana</span>
+                            <span class="tech-badge">React</span>
+                            <span class="tech-badge">Web3</span>
+                        </div>
+                        <a href="https://github.com/MikeAlladoum/koya" class="project-link" target="_blank">
+                            <i class="fab fa-github"></i> Voir sur GitHub
+                        </a>
+                    </div>
+
+                    <div class="project-card">
+                        <h3>🔒 Sentinel Liquidation</h3>
+                        <p>Protocole DeFi de liquidation automatisée avec gestion des risques avancée</p>
+                        <div class="tech-stack">
+                            <span class="tech-badge">Solidity</span>
+                            <span class="tech-badge">DeFi</span>
+                            <span class="tech-badge">Web3.js</span>
+                        </div>
+                        <a href="https://github.com/MikeAlladoum/sentinel-liquidation" class="project-link" target="_blank">
+                            <i class="fab fa-github"></i> Voir sur GitHub
+                        </a>
+                    </div>
+
+                    <div class="project-card">
+                        <h3>💳 WalletConnect DApp</h3>
+                        <p>Application multi-chain avec intégration complète de WalletConnect</p>
+                        <div class="tech-stack">
+                            <span class="tech-badge">React</span>
+                            <span class="tech-badge">WalletConnect</span>
+                            <span class="tech-badge">Ethers.js</span>
+                        </div>
+                        <a href="https://github.com/MikeAlladoum/walletconnect-dapp" class="project-link" target="_blank">
+                            <i class="fab fa-github"></i> Voir sur GitHub
+                        </a>
+                    </div>
+
+                    <div class="project-card">
+                        <h3>🛍️ DAPP Enchères</h3>
+                        <p>Plateforme d'enchères décentralisée basée sur la blockchain Ethereum</p>
+                        <div class="tech-stack">
+                            <span class="tech-badge">Solidity</span>
+                            <span class="tech-badge">Smart Contracts</span>
+                            <span class="tech-badge">Next.js</span>
+                        </div>
+                        <a href="https://github.com/MikeAlladoum/dapp-encheres" class="project-link" target="_blank">
+                            <i class="fab fa-github"></i> Voir sur GitHub
+                        </a>
+                    </div>
+
+                    <div class="project-card">
+                        <h3>📊 Sales Analytics</h3>
+                        <p>Système d'analyse de données de vente avec visualisations en temps réel</p>
+                        <div class="tech-stack">
+                            <span class="tech-badge">Python</span>
+                            <span class="tech-badge">Analytics</span>
+                            <span class="tech-badge">Data</span>
+                        </div>
+                        <a href="https://github.com/MikeAlladoum/sales-analytics" class="project-link" target="_blank">
+                            <i class="fab fa-github"></i> Voir sur GitHub
+                        </a>
+                    </div>
+
+                    <div class="project-card">
+                        <h3>🌡️ Temperature System</h3>
+                        <p>Système de monitoring IoT avec alertes en temps réel et historique</p>
+                        <div class="tech-stack">
+                            <span class="tech-badge">Node.js</span>
+                            <span class="tech-badge">IoT</span>
+                            <span class="tech-badge">Real-time</span>
+                        </div>
+                        <a href="https://github.com/MikeAlladoum/temperature-system" class="project-link" target="_blank">
+                            <i class="fab fa-github"></i> Voir sur GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION SERVICES -->
+        <section id="services">
+            <div class="container">
+                <h2 class="section-title">Services</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <h3>🔧 Développement Smart Contracts</h3>
+                        <p>Création et audit de contrats intelligents sécurisés en Solidity</p>
+                    </div>
+                    <div class="project-card">
+                        <h3>🌐 DApp Web3</h3>
+                        <p>Développement d'applications décentralisées performantes et conviviales</p>
+                    </div>
+                    <div class="project-card">
+                        <h3>💡 Consultation Blockchain</h3>
+                        <p>Conseil et stratégie pour intégrer la blockchain dans votre projet</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION CERTIFICATIONS -->
+        <section id="certifications" style="background: rgba(26, 31, 58, 0.5);">
+            <div class="container">
+                <h2 class="section-title">Certifications</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <h3>🏆 Blockchain Specialization</h3>
+                        <p><strong>Coursera</strong> • 2024</p>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Specialization complète en technologie blockchain et contrats intelligents</p>
+                        <a href="#" class="project-link" style="margin-top: 1rem;">
+                            <i class="fas fa-certificate"></i> Vérifier
+                        </a>
+                    </div>
+                    <div class="project-card">
+                        <h3>📚 Solidity Advanced</h3>
+                        <p><strong>Udemy</strong> • 2024</p>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Cours avancé Solidity avec focus sur sécurité et optimisations</p>
+                        <a href="#" class="project-link" style="margin-top: 1rem;">
+                            <i class="fas fa-certificate"></i> Vérifier
+                        </a>
+                    </div>
+                    <div class="project-card">
+                        <h3>💡 Smart Contracts Essentials</h3>
+                        <p><strong>Ethereum</strong> • 2023</p>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Fundamentals of smart contracts development et best practices</p>
+                        <a href="#" class="project-link" style="margin-top: 1rem;">
+                            <i class="fas fa-certificate"></i> Vérifier
+                        </a>
+                    </div>
+                    <div class="project-card">
+                        <h3>🔐 Web3 Security</h3>
+                        <p><strong>OpenZeppelin</strong> • 2024</p>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Sécurité avancée et audit des contrats intelligents</p>
+                        <a href="#" class="project-link" style="margin-top: 1rem;">
+                            <i class="fas fa-certificate"></i> Vérifier
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION AVIS -->
+        <section id="avis" style="background: rgba(26, 31, 58, 0.5);">
+            <div class="container">
+                <h2 class="section-title">Avis</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <p><strong>Prof. Jean-Pierre:</strong> "Mike démontre un potentiel exceptionnel en développement blockchain"</p>
+                    </div>
+                    <div class="project-card">
+                        <p><strong>Sarah Mensah:</strong> "Contrats intelligents, livraison fiable. Un développeur de confiance"</p>
+                    </div>
+                    <div class="project-card">
+                        <p><strong>David Kofi:</strong> "L'un des développeurs les plus dévoués que je connaisse"</p>
+                    </div>
+                    <div class="project-card">
+                        <p><strong>Dr. Amara Okafor:</strong> "Futur leader dans les systèmes décentralisés"</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION FAQ -->
+        <section id="faq">
+            <div class="container">
+                <h2 class="section-title">Questions Fréquentes</h2>
+                <div style="max-width: 700px; margin: 0 auto;">
+                    <div class="project-card" style="margin-bottom: 1rem;">
+                        <h3>Q: Quels sont vos domaines de spécialisation?</h3>
+                        <p>Je spécialise dans le développement blockchain avec 2 ans d'expérience, les contrats intelligents Solidity, les protocoles DeFi et les DApps Web3 performantes.</p>
+                    </div>
+                    <div class="project-card" style="margin-bottom: 1rem;">
+                        <h3>Q: Travaillez-vous en freelance?</h3>
+                        <p>Oui, je suis disponible pour des projets freelance. Contactez-moi sur WhatsApp, email ou LinkedIn pour discuter de votre projet.</p>
+                    </div>
+                    <div class="project-card" style="margin-bottom: 1rem;">
+                        <h3>Q: Quelle est votre expérience?</h3>
+                        <p>Développeur blockchain avec 2 ans d'expérience solide. J'ai plusieurs projets complétés et des contributions actives dans l'écosystème Web3.</p>
+                    </div>
+                    <div class="project-card">
+                        <h3>Q: Comment puis-je vous contacter?</h3>
+                        <p>Via WhatsApp (+228 92361187), email (djekourman.alladoum@gmail.com), LinkedIn ou GitHub. Réponse rapide garantie!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION CONTACT -->
+        <section id="contact" style="background: rgba(26, 31, 58, 0.5);">
+            <div class="container">
+                <h2 class="section-title">Contact</h2>
+                <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                        Intéressé par mon travail? Parlons de votre projet!
+                    </p>
+                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                        <a href="https://wa.me/22892361187" class="btn btn-primary" target="_blank">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </a>
+                        <a href="mailto:djekourman.alladoum@gmail.com" class="btn btn-secondary">
+                            <i class="fas fa-envelope"></i> Email
+                        </a>
+                        <a href="https://linkedin.com/in/mike-alladoum" class="btn btn-secondary" target="_blank">
+                            <i class="fab fa-linkedin"></i> LinkedIn
+                        </a>
+                        <a href="https://github.com/MikeAlladoum" class="btn btn-secondary" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 Mike Alladoum - Tous droits réservés</p>
+        <p>Développeur Blockchain | Web3 Engineer | 📍 Lomé, Togo</p>
+        <div class="footer-links">
+            <a href="https://github.com/MikeAlladoum" target="_blank">GitHub</a>
+            <a href="https://linkedin.com/in/mike-alladoum" target="_blank">LinkedIn</a>
+            <a href="https://twitter.com/mikealladoum" target="_blank">Twitter</a>
+            <a href="mailto:djekourman.alladoum@gmail.com">Email</a>
+        </div>
+    </footer>
+
+    <!-- CV MODAL -->
+    <div id="cvModal" class="cv-modal" style="display: none;">
+        <div class="cv-modal-content">
+            <button class="cv-modal-close" id="closeCvBtn">&times;</button>
+            <div class="cv-modal-header">
+                <h2>Mon Professionnel</h2>
+                <a href="assets/cv/resume.pdf" class="btn btn-primary" download>
+                    <i class="fas fa-download"></i> Télécharger CV
+                </a>
+            </div>
+            <div id="cvContent" class="cv-content">
+                <!-- CV will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============ SCROLL SPY & NAVBAR ============
+        const navLinks = document.querySelectorAll('.nav-link');
+        const navToggle = document.getElementById('navbar-toggle');
+        const navMenu = document.querySelector('.navbar-menu');
+
+        // Toggle mobile menu
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // Close menu when link clicked
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // Scroll spy - update active link based on scroll position
+        window.addEventListener('scroll', () => {
+            let current = '';
+            
+            document.querySelectorAll('section').forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // ============ SMOOTH SCROLL ENHANCEMENT ============
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const element = document.querySelector(href);
+                    if (element) {
+                        const offsetTop = element.offsetTop - 80;
+                        window.scrollTo({
+                            top: offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+
+        // ============ ANIMATION ON SCROLL ============
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.6s ease-out';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.project-card, section').forEach(el => {
+            observer.observe(el);
+        });
+
+        // ============ CV MODAL ============
+        const cvModal = document.getElementById('cvModal');
+        const viewCvBtn = document.getElementById('viewCvBtn');
+        const closeCvBtn = document.getElementById('closeCvBtn');
+        const cvContent = document.getElementById('cvContent');
+
+        viewCvBtn.addEventListener('click', () => {
+            cvModal.style.display = 'flex';
+            loadCVContent();
+        });
+
+        closeCvBtn.addEventListener('click', () => {
+            cvModal.style.display = 'none';
+        });
+
+        cvModal.addEventListener('click', (e) => {
+            if (e.target === cvModal) {
+                cvModal.style.display = 'none';
+            }
+        });
+
+        function loadCVContent() {
+            const cvHTML = `
+                <h3>👤 Informations Personnelles</h3>
+                <p><strong>Nom:</strong> DJEKOURMAN ALLADOUM MIKE</p>
+                <p><strong>Titre:</strong> Développeur Blockchain | Web3 Engineer</p>
+                <p><strong>Expérience:</strong> 2 ans en développement blockchain</p>
+                <p><strong>Localisation:</strong> Lomé, Togo</p>
+                <p><strong>Email:</strong> djekourman.alladoum@gmail.com</p>
+                <p><strong>WhatsApp:</strong> +228 92361187</p>
+                <p><strong>LinkedIn:</strong> mike-alladoum</p>
+
+                <h3>💼 Expérience Professionnelle</h3>
+                <p><strong>Développeur Blockchain Senior (2024-Présent)</strong></p>
+                <ul>
+                    <li>Développement de contrats intelligents Solidity pour DeFi</li>
+                    <li>Conception et implémentation de protocoles Web3</li>
+                    <li>Audit de sécurité et optimisation des smart contracts</li>
+                    <li>Intégration de portefeuilles numériques et protocoles de liquidation</li>
+                </ul>
+
+                <p><strong>Développeur Web3 (2023-2024)</strong></p>
+                <ul>
+                    <li>Création d'applications décentralisées (DApps)</li>
+                    <li>Intégration avec Solana, Ethereum et autres blockchains</li>
+                    <li>Frontend avec React, Next.js et Web3.js/Ethers.js</li>
+                    <li>Gestion de bases de données blockchain</li>
+                </ul>
+
+                <h3>🎓 Compétences Techniques</h3>
+                <ul>
+                    <li><strong>Blockchain:</strong> Solidity, Web3.js, Ethers.js, Solana, Hardhat, Truffle</li>
+                    <li><strong>Frontend:</strong> React, Next.js, TypeScript, Tailwind CSS, Framer Motion</li>
+                    <li><strong>Backend:</strong> Node.js, Python, PostgreSQL, Express</li>
+                    <li><strong>Tools:</strong> Git, Docker, GitHub, VSCode, Remix IDE</li>
+                    <li><strong>Langues:</strong> Français, Anglais</li>
+                </ul>
+
+                <h3>📚 Éducation & Certifications</h3>
+                <ul>
+                    <li>Certification Développeur Blockchain - Coursera</li>
+                    <li>Certification Solidity Advanced - Udemy</li>
+                    <li>Baccalauréat Informatique</li>
+                </ul>
+
+                <h3>🏆 Projets Majeurs</h3>
+                <ul>
+                    <li><strong>KOYA:</strong> Application Solana DApp avec intégration wallet</li>
+                    <li><strong>Sentinel Liquidation:</strong> Protocole DeFi de liquidation automatisée</li>
+                    <li><strong>WalletConnect DApp:</strong> Application multi-chain avec WalletConnect</li>
+                    <li><strong>DAPP Enchères:</strong> Plateforme décentralisée Ethereum</li>
+                </ul>
+
+                <h3>💬 À Propos</h3>
+                <p>Développeur blockchain passionné avec 2 ans d'expérience solide dans le développement de solutions Web3. 
+                Je spécialise dans la création de contrats intelligents sécurisés, de protocoles DeFi innovants et d'applications 
+                décentralisées performantes. Mon objectif est de contribuer à l'adoption massive de la technologie blockchain 
+                et de créer des solutions qui changent le monde.</p>
+            `;
+            cvContent.innerHTML = cvHTML;
+        }
+
+        console.log('✅ Portfolio chargé avec succès!');
+    </script>
+</body>
+</html>

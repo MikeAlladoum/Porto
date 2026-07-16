@@ -1,0 +1,13 @@
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  swcMinify: false,
+  compiler: {
+    emotion: true,
+  },
+  images: {
+    domains: ['github.com', 'avatars.githubusercontent.com', 'api.github.com'],
+  },
+};
+
+module.exports = nextConfig;
