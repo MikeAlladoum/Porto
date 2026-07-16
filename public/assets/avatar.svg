@@ -1,45 +1,85 @@
 <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#00d9ff;stop-opacity:0.2" />
-      <stop offset="100%" style="stop-color:#b344ff;stop-opacity:0.2" />
+    <linearGradient id="skinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B6F47;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6B4423;stop-opacity:1" />
     </linearGradient>
-    <linearGradient id="headGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#00d9ff;stop-opacity:0.9" />
-      <stop offset="100%" style="stop-color:#b344ff;stop-opacity:0.9" />
+    <linearGradient id="shirtGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F5F5F0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E8E8E0;stop-opacity:1" />
     </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+    <radialGradient id="highlightGradient">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0" />
+    </radialGradient>
   </defs>
-  
-  <!-- Background Circle -->
-  <circle cx="150" cy="150" r="150" fill="url(#bgGradient)"/>
-  
+
+  <!-- Background -->
+  <rect width="300" height="300" fill="#f0e8d8" opacity="0.3"/>
+
+  <!-- Neck -->
+  <rect x="120" y="160" width="60" height="40" fill="url(#skinGradient)" opacity="0.95"/>
+
   <!-- Head -->
-  <circle cx="150" cy="100" r="50" fill="url(#headGradient)"/>
-  
-  <!-- Body -->
-  <rect x="100" y="160" width="100" height="100" rx="10" fill="url(#headGradient)" opacity="0.8"/>
-  
-  <!-- Left Arm -->
-  <rect x="50" y="170" width="50" height="30" rx="15" fill="url(#headGradient)" opacity="0.7" transform="rotate(-30 75 185)"/>
-  
-  <!-- Right Arm -->
-  <rect x="200" y="170" width="50" height="30" rx="15" fill="url(#headGradient)" opacity="0.7" transform="rotate(30 225 185)"/>
-  
+  <circle cx="150" cy="110" r="65" fill="url(#skinGradient)" filter="url(#shadow)"/>
+
+  <!-- Hair -->
+  <ellipse cx="150" cy="60" rx="68" ry="55" fill="#1a1a1a"/>
+  <path d="M 85 100 Q 80 80 100 55 Q 120 45 150 40 Q 180 45 200 55 Q 220 80 215 100" fill="#0a0a0a" opacity="0.8"/>
+
+  <!-- Face shine/highlight -->
+  <ellipse cx="130" cy="85" rx="20" ry="30" fill="url(#highlightGradient)" opacity="0.4"/>
+
   <!-- Eyes -->
-  <circle cx="135" cy="90" r="4" fill="#0a0e27"/>
-  <circle cx="165" cy="90" r="4" fill="#0a0e27"/>
+  <ellipse cx="125" cy="105" rx="8" ry="12" fill="#2a2a2a"/>
+  <ellipse cx="175" cy="105" rx="8" ry="12" fill="#2a2a2a"/>
   
-  <!-- Smile -->
-  <path d="M 140 105 Q 150 115 160 105" stroke="#0a0e27" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- Eye highlights -->
+  <circle cx="127" cy="100" r="3" fill="#ffffff" opacity="0.8"/>
+  <circle cx="177" cy="100" r="3" fill="#ffffff" opacity="0.8"/>
   
-  <!-- Tech Elements - Code Symbol -->
-  <g opacity="0.6">
-    <text x="150" y="280" font-family="monospace" font-size="30" fill="#00d9ff" text-anchor="middle">&lt;/&gt;</text>
-  </g>
-  
-  <!-- Decorative Hexagons -->
-  <g stroke="#b344ff" stroke-width="1" fill="none" opacity="0.4">
-    <polygon points="20,80 30,75 40,80 35,90 25,90"/>
-    <polygon points="260,200 270,195 280,200 275,210 265,210"/>
+  <!-- Eyebrows -->
+  <path d="M 110 90 Q 125 85 140 90" stroke="#1a1a1a" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M 160 90 Q 175 85 190 90" stroke="#1a1a1a" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+  <!-- Nose -->
+  <path d="M 150 100 L 150 130" stroke="#6B4423" stroke-width="2" fill="none"/>
+  <ellipse cx="140" cy="132" rx="4" ry="3" fill="#6B4423" opacity="0.6"/>
+  <ellipse cx="160" cy="132" rx="4" ry="3" fill="#6B4423" opacity="0.6"/>
+
+  <!-- Mouth - Friendly Smile -->
+  <path d="M 125 140 Q 150 155 175 140" stroke="#8B4513" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <!-- Lips fill -->
+  <path d="M 125 140 Q 150 152 175 140 Q 150 148 125 140" fill="#A0522D" opacity="0.7"/>
+
+  <!-- Shirt -->
+  <path d="M 100 170 L 120 160 L 180 160 L 200 170 L 200 280 L 100 280 Z" fill="url(#shirtGradient)" filter="url(#shadow)"/>
+
+  <!-- Shirt collar left -->
+  <polygon points="120,160 135,175 120,175" fill="#E0E0D0" opacity="0.9"/>
+
+  <!-- Shirt collar right -->
+  <polygon points="180,160 165,175 180,175" fill="#E0E0D0" opacity="0.9"/>
+
+  <!-- Shirt buttons -->
+  <circle cx="150" cy="190" r="2.5" fill="#D0C0A0" opacity="0.7"/>
+  <circle cx="150" cy="220" r="2.5" fill="#D0C0A0" opacity="0.7"/>
+  <circle cx="150" cy="250" r="2.5" fill="#D0C0A0" opacity="0.7"/>
+
+  <!-- Shirt shadow/fold -->
+  <path d="M 130 170 Q 130 200 135 280" stroke="#D0D0C0" stroke-width="1" fill="none" opacity="0.5"/>
+  <path d="M 170 170 Q 170 200 165 280" stroke="#D0D0C0" stroke-width="1" fill="none" opacity="0.5"/>
+
+  <!-- Shoulder highlights -->
+  <ellipse cx="110" cy="175" rx="12" ry="25" fill="#ffffff" opacity="0.15"/>
+  <ellipse cx="190" cy="175" rx="12" ry="25" fill="#ffffff" opacity="0.15"/>
+
+  <!-- Professional badge overlay hint -->
+  <g opacity="0.15">
+    <circle cx="250" cy="40" r="25" fill="none" stroke="#00d9ff" stroke-width="1"/>
+    <text x="250" y="45" font-family="monospace" font-size="16" fill="#00d9ff" text-anchor="middle">&lt;/&gt;</text>
   </g>
 </svg>
