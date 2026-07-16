@@ -21,6 +21,115 @@
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        /* LIGHT THEME */
+        html.light-theme {
+            --dark-bg: #f5f7fa;
+            --dark-secondary: #ffffff;
+            --text-primary: #1a1f3a;
+            --text-secondary: #6b7280;
+            --border-color: rgba(0, 217, 255, 0.15);
+            --shadow-glow: 0 0 30px rgba(0, 217, 255, 0.15);
+        }
+
+        html.light-theme body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #ffffff 100%);
+        }
+
+        html.light-theme .sidebar {
+            background: rgba(255, 255, 255, 0.7);
+            border-right-color: var(--border-color);
+        }
+
+        html.light-theme .main-content {
+            background: linear-gradient(135deg, #f5f7fa 0%, #ffffff 100%);
+        }
+
+        html.light-theme .stat-card,
+        html.light-theme .form-modal-content {
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        html.light-theme table {
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        /* ============ ANIMATIONS ============ */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(0, 217, 255, 0.5),
+                            0 0 40px rgba(179, 68, 255, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(0, 217, 255, 0.8),
+                            0 0 60px rgba(179, 68, 255, 0.5);
+            }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
         /* ============ RESET & BASE ============ */
         * {
             margin: 0;
@@ -119,6 +228,132 @@
 
         .sidebar-logout a:hover {
             background: rgba(255, 52, 79, 0.1) !important;
+        }
+
+        /* THEME TOGGLE */
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: var(--text-secondary);
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            width: 100%;
+            justify-content: flex-start;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(0, 217, 255, 0.1);
+            color: var(--primary-cyan);
+            border-color: var(--primary-cyan);
+        }
+
+        .theme-toggle i {
+            font-size: 1.1rem;
+            animation: rotate 2s linear infinite;
+            animation-play-state: paused;
+        }
+
+        .theme-toggle:hover i {
+            animation-play-state: running;
+        }
+
+        /* SECTION ANIMATIONS */
+        .section {
+            animation: slideInUp 0.5s ease-out;
+        }
+
+        .section.active {
+            animation: slideInUp 0.5s ease-out;
+        }
+
+        /* CARD ANIMATIONS */
+        .stat-card {
+            animation: slideInUp 0.6s ease-out;
+            transition: var(--transition);
+            transform-origin: center;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0, 217, 255, 0.2);
+        }
+
+        /* TABLE ANIMATIONS */
+        table tbody tr {
+            animation: slideInLeft 0.5s ease-out;
+            animation-fill-mode: both;
+        }
+
+        table tbody tr:nth-child(1) { animation-delay: 0.1s; }
+        table tbody tr:nth-child(2) { animation-delay: 0.2s; }
+        table tbody tr:nth-child(3) { animation-delay: 0.3s; }
+        table tbody tr:nth-child(4) { animation-delay: 0.4s; }
+        table tbody tr:nth-child(5) { animation-delay: 0.5s; }
+
+        table tbody tr:hover {
+            background: rgba(0, 217, 255, 0.05) !important;
+            transform: translateX(4px);
+            transition: var(--transition);
+        }
+
+        /* BUTTON ANIMATIONS */
+        button {
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .btn-small,
+        .btn-filter {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+
+        .btn-small:hover,
+        .btn-filter:hover {
+            box-shadow: 0 8px 24px rgba(0, 217, 255, 0.2);
+        }
+
+        .btn-filter.active {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* FORM MODAL ANIMATIONS */
+        .form-modal {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .form-modal.show {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .form-modal-content {
+            animation: slideInDown 0.4s ease-out;
+        }
+
+        /* INPUT ANIMATIONS */
+        input, textarea, select {
+            transition: var(--transition);
+        }
+
+        input:focus, textarea:focus, select:focus {
+            box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.2);
+            transform: scale(1.02);
         }
 
         /* ============ MAIN CONTENT ============ */
@@ -612,6 +847,10 @@
             </a></li>
         </ul>
         <div class="sidebar-logout">
+            <button id="themeToggle" class="theme-toggle">
+                <i class="fas fa-moon"></i>
+                <span>Mode Clair</span>
+            </button>
             <a href="#" id="logoutBtn">
                 <i class="fas fa-sign-out-alt"></i> Déconnexion
             </a>
@@ -2076,7 +2315,46 @@
             window.location.href = '/admin/login.html';
         });
 
+        // ============ THEME TOGGLE ============
+        const THEME_KEY = 'adminTheme';
+
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem(THEME_KEY) || 'dark';
+            applyTheme(savedTheme);
+        }
+
+        function applyTheme(theme) {
+            const html = document.documentElement;
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = themeToggle.querySelector('i');
+            const themeText = themeToggle.querySelector('span');
+
+            if (theme === 'light') {
+                html.classList.add('light-theme');
+                themeIcon.className = 'fas fa-sun';
+                themeText.textContent = 'Mode Sombre';
+                localStorage.setItem(THEME_KEY, 'light');
+            } else {
+                html.classList.remove('light-theme');
+                themeIcon.className = 'fas fa-moon';
+                themeText.textContent = 'Mode Clair';
+                localStorage.setItem(THEME_KEY, 'dark');
+            }
+        }
+
+        function toggleTheme() {
+            const currentTheme = localStorage.getItem(THEME_KEY) || 'dark';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            applyTheme(newTheme);
+        }
+
+        document.getElementById('themeToggle').addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleTheme();
+        });
+
         // Initialize
+        initializeTheme();
         initializeProjects();
         renderProjects();
         initializeCertificates();
