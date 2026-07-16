@@ -727,10 +727,10 @@
             <li><a href="#apropos" class="nav-link">À propos</a></li>
             <li><a href="#skills" class="nav-link">Skills</a></li>
             <li><a href="#projets" class="nav-link">Projets</a></li>
-            <li><a href="#certifications" class="nav-link">Certifications</a></li>
+            <li><a href="#certifications" class="nav-link">Certs</a></li>
+            <li><a href="#education" class="nav-link">Formation</a></li>
+            <li><a href="#timeline" class="nav-link">Parcours</a></li>
             <li><a href="#services" class="nav-link">Services</a></li>
-            <li><a href="#avis" class="nav-link">Avis</a></li>
-            <li><a href="#faq" class="nav-link">FAQ</a></li>
             <li><a href="#contact" class="nav-link">Contact</a></li>
             <li><a href="/admin/login" class="nav-link admin-link">🔐 Dashboard</a></li>
         </ul>
@@ -993,6 +993,174 @@
                     </div>
                     <div class="project-card">
                         <p><strong>Dr. Amara Okafor:</strong> "Futur leader dans les systèmes décentralisés"</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION ÉDUCATION -->
+        <section id="education">
+            <div class="container">
+                <h2 class="section-title">Parcours Éducation</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <h3>🎓 Ingénieur Génie Logiciel</h3>
+                        <p><strong>Institut Africain de Technologie</strong></p>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary);">2024 - Présent</p>
+                        <p style="margin-top: 0.5rem; font-size: 0.95rem;">Formation complète en génie logiciel avec spécialisation en développement blockchain et systèmes décentralisés.</p>
+                    </div>
+                    <div class="project-card">
+                        <h3>🏆 Blockchain Specialization</h3>
+                        <p><strong>Coursera</strong></p>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary);">2024</p>
+                        <p style="margin-top: 0.5rem; font-size: 0.95rem;">Certification complète en technologie blockchain, smart contracts et protocoles décentralisés.</p>
+                    </div>
+                    <div class="project-card">
+                        <h3>📚 Harvard CS50</h3>
+                        <p><strong>Harvard University</strong></p>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary);">2023 - 2024</p>
+                        <p style="margin-top: 0.5rem; font-size: 0.95rem;">Cours d'informatique de haut niveau couvrant les fondamentaux de la programmation et des structures de données.</p>
+                    </div>
+                    <div class="project-card">
+                        <h3>🔐 Solidity Advanced</h3>
+                        <p><strong>Udemy</strong></p>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary);">2024</p>
+                        <p style="margin-top: 0.5rem; font-size: 0.95rem;">Cours avancé Solidity avec focus sur sécurité, optimisation des gas et best practices Web3.</p>
+                    </div>
+                    <div class="project-card">
+                        <h3>🌐 Full Stack Web Development</h3>
+                        <p><strong>Udemy</strong></p>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary);">2023</p>
+                        <p style="margin-top: 0.5rem; font-size: 0.95rem;">Mastermind Full Stack: React, Node.js, MongoDB avec déploiement production et best practices.</p>
+                    </div>
+                    <div class="project-card">
+                        <h3>📜 Baccalauréat Informatique</h3>
+                        <p><strong>Lycée Moderne Lomé</strong></p>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary);">2022</p>
+                        <p style="margin-top: 0.5rem; font-size: 0.95rem;">Diplôme d'études secondaires avec spécialisation en informatique et sciences mathématiques.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION TIMELINE / MON PARCOURS -->
+        <section id="timeline" style="background: rgba(26, 31, 58, 0.5);">
+            <div class="container">
+                <h2 class="section-title">Mon Parcours 🚀</h2>
+                <div style="max-width: 800px; margin: 0 auto; position: relative;">
+                    <style>
+                        .timeline {
+                            position: relative;
+                            padding: 2rem 0;
+                        }
+                        .timeline::before {
+                            content: '';
+                            position: absolute;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            width: 2px;
+                            height: 100%;
+                            background: linear-gradient(to bottom, var(--primary-cyan), var(--primary-purple), var(--primary-pink));
+                        }
+                        .timeline-item {
+                            margin-bottom: 3rem;
+                            position: relative;
+                        }
+                        .timeline-item:nth-child(odd) .timeline-content {
+                            margin-left: 0;
+                            margin-right: auto;
+                            width: calc(50% - 30px);
+                            text-align: right;
+                        }
+                        .timeline-item:nth-child(even) .timeline-content {
+                            margin-left: auto;
+                            margin-right: 0;
+                            width: calc(50% - 30px);
+                            text-align: left;
+                        }
+                        .timeline-dot {
+                            position: absolute;
+                            left: 50%;
+                            top: 0;
+                            transform: translateX(-50%);
+                            width: 16px;
+                            height: 16px;
+                            background: var(--primary-cyan);
+                            border: 3px solid var(--dark-bg);
+                            border-radius: 50%;
+                            z-index: 10;
+                        }
+                        .timeline-content {
+                            background: rgba(255, 255, 255, 0.05);
+                            border: 1px solid var(--border-color);
+                            border-radius: 8px;
+                            padding: 1.5rem;
+                            backdrop-filter: blur(10px);
+                        }
+                        .timeline-content h3 {
+                            color: var(--primary-cyan);
+                            margin-bottom: 0.3rem;
+                            font-size: 1.2rem;
+                        }
+                        .timeline-content .year {
+                            color: var(--primary-pink);
+                            font-weight: 700;
+                            font-size: 1.1rem;
+                            margin-bottom: 0.5rem;
+                        }
+                        .timeline-content p {
+                            color: var(--text-secondary);
+                            font-size: 0.95rem;
+                        }
+                        @media (max-width: 768px) {
+                            .timeline::before {
+                                left: 10px;
+                            }
+                            .timeline-item:nth-child(odd) .timeline-content,
+                            .timeline-item:nth-child(even) .timeline-content {
+                                margin-left: 50px;
+                                margin-right: 0;
+                                width: auto;
+                                text-align: left;
+                            }
+                            .timeline-dot {
+                                left: 10px;
+                            }
+                        }
+                    </style>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="year">2022</div>
+                                <h3>🎓 Baccalauréat</h3>
+                                <p>Diplôme en informatique et mathématiques</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="year">2023</div>
+                                <h3>📚 Full Stack Learning</h3>
+                                <p>Harvard CS50 + Udemy Full Stack Web Development</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="year">2024</div>
+                                <h3>⛓️ Blockchain Specialization</h3>
+                                <p>Coursera + Solidity Advanced + Blockchain Deep Dive</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="year">2024 - Présent</div>
+                                <h3>🚀 Développeur Blockchain Senior</h3>
+                                <p>2 ans d'expérience + Génie Logiciel spécialisé</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

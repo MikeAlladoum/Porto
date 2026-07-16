@@ -300,6 +300,205 @@
             }
         }
 
+        /* ============ TABLE STYLES ============ */
+        .table-container {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: rgba(0, 217, 255, 0.1);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            text-align: left;
+            padding: 1rem;
+            font-weight: 600;
+            color: var(--primary-cyan);
+            font-size: 0.95rem;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        tbody tr:hover {
+            background: rgba(0, 217, 255, 0.05);
+        }
+
+        .project-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-small {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-small-cyan {
+            background: rgba(0, 217, 255, 0.2);
+            color: var(--primary-cyan);
+            border: 1px solid var(--primary-cyan);
+        }
+
+        .btn-small-cyan:hover {
+            background: var(--primary-cyan);
+            color: var(--dark-bg);
+        }
+
+        .btn-small-delete {
+            background: rgba(255, 52, 79, 0.2);
+            color: var(--primary-pink);
+            border: 1px solid var(--primary-pink);
+        }
+
+        .btn-small-delete:hover {
+            background: var(--primary-pink);
+            color: white;
+        }
+
+        /* ============ FORM STYLES ============ */
+        .form-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form-modal.show {
+            display: flex;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .form-modal-content {
+            background: var(--dark-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .form-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .form-modal-header h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--primary-cyan);
+            margin: 0;
+        }
+
+        .form-modal-close {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            background: rgba(0, 217, 255, 0.1);
+            border-color: var(--primary-cyan);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+        }
+
+        .form-actions button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .form-actions .btn-save {
+            background: linear-gradient(135deg, var(--primary-cyan), #0099cc);
+            color: var(--dark-bg);
+        }
+
+        .form-actions .btn-cancel {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
         /* ============ RESPONSIVE ============ */
         @media (max-width: 768px) {
             .sidebar {
@@ -462,15 +661,32 @@
             <div class="header">
                 <h1>📁 Gestion des Projets</h1>
                 <div class="header-actions">
-                    <button class="btn btn-primary">
+                    <button class="btn btn-primary" id="addProjectBtn">
                         <i class="fas fa-plus"></i> Nouveau Projet
                     </button>
                 </div>
             </div>
-            <div class="chart-container">
-                <p style="color: var(--text-secondary); text-align: center; padding: 2rem;">
-                    ⚙️ CRUD Projets - À développer
-                </p>
+
+            <div id="projectsContainer" class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Titre</th>
+                            <th>Tech</th>
+                            <th>Statut</th>
+                            <th>À la Une</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="projectsTableBody">
+                        <tr>
+                            <td colspan="5" class="empty-state">
+                                <i class="fas fa-inbox"></i><br/>
+                                Aucun projet. Créez-en un!
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </section>
 
@@ -578,6 +794,56 @@
         </section>
     </main>
 
+    <!-- PROJECT FORM MODAL -->
+    <div id="projectFormModal" class="form-modal">
+        <div class="form-modal-content">
+            <div class="form-modal-header">
+                <h2 id="formTitle">Nouveau Projet</h2>
+                <button class="form-modal-close" id="closeFormBtn">&times;</button>
+            </div>
+            <form id="projectForm">
+                <div class="form-group">
+                    <label for="projectTitle">Titre *</label>
+                    <input type="text" id="projectTitle" required placeholder="ex: KOYA" />
+                </div>
+                <div class="form-group">
+                    <label for="projectDescription">Description *</label>
+                    <textarea id="projectDescription" required placeholder="Description du projet..." style="height: 100px;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="projectTech">Technologies (séparées par des virgules) *</label>
+                    <input type="text" id="projectTech" required placeholder="ex: React, Web3, Solana" />
+                </div>
+                <div class="form-group">
+                    <label for="projectGithub">Lien GitHub</label>
+                    <input type="url" id="projectGithub" placeholder="https://github.com/..." />
+                </div>
+                <div class="form-group">
+                    <label for="projectLive">Lien Live</label>
+                    <input type="url" id="projectLive" placeholder="https://..." />
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <div style="flex: 1;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                            <input type="checkbox" id="projectFeatured" />
+                            <span>À la une</span>
+                        </label>
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                            <input type="checkbox" id="projectArchived" />
+                            <span>Archivé</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="cancelFormBtn">Annuler</button>
+                    <button type="submit" class="btn-save">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         // ============ AUTHENTICATION CHECK ============
         function checkAuth() {
@@ -590,6 +856,150 @@
 
         checkAuth();
 
+        // ============ PROJECTS CRUD ============
+        const PROJECTS_KEY = 'adminProjects';
+
+        // Initialize default projects
+        function initializeProjects() {
+            if (!localStorage.getItem(PROJECTS_KEY)) {
+                const defaultProjects = [
+                    { id: 1, title: 'KOYA', description: 'Application Solana DApp avec interface utilisateur intuitives', tech: ['Solana', 'React', 'Web3'], github: 'https://github.com/MikeAlladoum/koya', live: '', featured: true, archived: false },
+                    { id: 2, title: 'Sentinel Liquidation', description: 'Protocole DeFi de liquidation automatisée', tech: ['Solidity', 'DeFi', 'Web3.js'], github: 'https://github.com/MikeAlladoum/sentinel-liquidation', live: '', featured: true, archived: false },
+                    { id: 3, title: 'WalletConnect DApp', description: 'Application multi-chain avec WalletConnect', tech: ['React', 'WalletConnect', 'Ethers.js'], github: 'https://github.com/MikeAlladoum/walletconnect-dapp', live: '', featured: false, archived: false },
+                    { id: 4, title: 'DAPP Enchères', description: 'Plateforme décentralisée Ethereum', tech: ['Solidity', 'Smart Contracts', 'Next.js'], github: 'https://github.com/MikeAlladoum/dapp-encheres', live: '', featured: false, archived: false },
+                    { id: 5, title: 'Sales Analytics', description: 'Système d\'analyse de données de vente', tech: ['Python', 'Analytics', 'Data'], github: 'https://github.com/MikeAlladoum/sales-analytics', live: '', featured: false, archived: false },
+                    { id: 6, title: 'Temperature System', description: 'Système de monitoring IoT avec alertes', tech: ['Node.js', 'IoT', 'Real-time'], github: 'https://github.com/MikeAlladoum/temperature-system', live: '', featured: false, archived: false }
+                ];
+                localStorage.setItem(PROJECTS_KEY, JSON.stringify(defaultProjects));
+            }
+        }
+
+        function getProjects() {
+            return JSON.parse(localStorage.getItem(PROJECTS_KEY) || '[]');
+        }
+
+        function saveProjects(projects) {
+            localStorage.setItem(PROJECTS_KEY, JSON.stringify(projects));
+            renderProjects();
+        }
+
+        function renderProjects() {
+            const projects = getProjects().filter(p => !p.archived);
+            const tbody = document.getElementById('projectsTableBody');
+
+            if (projects.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="empty-state"><i class="fas fa-inbox"></i><br/>Aucun projet actif</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = projects.map(p => `
+                <tr>
+                    <td><strong>${p.title}</strong></td>
+                    <td><small>${p.tech.slice(0, 2).join(', ')}</small></td>
+                    <td><small>${p.archived ? 'Archivé' : 'Actif'}</small></td>
+                    <td>${p.featured ? '<i class="fas fa-star" style="color: var(--primary-pink);"></i>' : '-'}</td>
+                    <td>
+                        <div class="project-actions">
+                            <button class="btn-small btn-small-cyan" onclick="editProject(${p.id})">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn-small btn-small-cyan" onclick="toggleFeatured(${p.id})" title="${p.featured ? 'Retirer' : 'À la une'}">
+                                <i class="fas fa-${p.featured ? 'times' : 'star'}"></i>
+                            </button>
+                            <button class="btn-small btn-small-delete" onclick="deleteProject(${p.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        let currentProjectId = null;
+
+        function openProjectForm(projectId = null) {
+            const modal = document.getElementById('projectFormModal');
+            const title = document.getElementById('formTitle');
+            
+            if (projectId) {
+                const projects = getProjects();
+                const project = projects.find(p => p.id === projectId);
+                if (project) {
+                    currentProjectId = projectId;
+                    title.textContent = 'Éditer Projet';
+                    document.getElementById('projectTitle').value = project.title;
+                    document.getElementById('projectDescription').value = project.description;
+                    document.getElementById('projectTech').value = project.tech.join(', ');
+                    document.getElementById('projectGithub').value = project.github || '';
+                    document.getElementById('projectLive').value = project.live || '';
+                    document.getElementById('projectFeatured').checked = project.featured;
+                    document.getElementById('projectArchived').checked = project.archived;
+                }
+            } else {
+                currentProjectId = null;
+                title.textContent = 'Nouveau Projet';
+                document.getElementById('projectForm').reset();
+            }
+            modal.classList.add('show');
+        }
+
+        function closeProjectForm() {
+            document.getElementById('projectFormModal').classList.remove('show');
+            currentProjectId = null;
+        }
+
+        document.getElementById('projectForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const projects = getProjects();
+            
+            const projectData = {
+                title: document.getElementById('projectTitle').value,
+                description: document.getElementById('projectDescription').value,
+                tech: document.getElementById('projectTech').value.split(',').map(t => t.trim()),
+                github: document.getElementById('projectGithub').value,
+                live: document.getElementById('projectLive').value,
+                featured: document.getElementById('projectFeatured').checked,
+                archived: document.getElementById('projectArchived').checked
+            };
+
+            if (currentProjectId) {
+                const idx = projects.findIndex(p => p.id === currentProjectId);
+                if (idx !== -1) {
+                    projects[idx] = { ...projects[idx], ...projectData };
+                }
+            } else {
+                projectData.id = Math.max(0, ...projects.map(p => p.id)) + 1;
+                projects.push(projectData);
+            }
+
+            saveProjects(projects);
+            closeProjectForm();
+        });
+
+        function editProject(id) {
+            openProjectForm(id);
+        }
+
+        function deleteProject(id) {
+            if (confirm('Confirmer la suppression?')) {
+                const projects = getProjects().filter(p => p.id !== id);
+                saveProjects(projects);
+            }
+        }
+
+        function toggleFeatured(id) {
+            const projects = getProjects();
+            const project = projects.find(p => p.id === id);
+            if (project) {
+                project.featured = !project.featured;
+                saveProjects(projects);
+            }
+        }
+
+        document.getElementById('addProjectBtn').addEventListener('click', () => openProjectForm());
+        document.getElementById('closeFormBtn').addEventListener('click', closeProjectForm);
+        document.getElementById('cancelFormBtn').addEventListener('click', closeProjectForm);
+
         // ============ NAVIGATION ============
         const navLinks = document.querySelectorAll('.nav-link');
         const sections = document.querySelectorAll('.section');
@@ -599,17 +1009,17 @@
                 e.preventDefault();
                 const sectionId = link.getAttribute('data-section');
                 
-                // Remove active class from all links
                 navLinks.forEach(l => l.classList.remove('active'));
                 link.classList.add('active');
 
-                // Hide all sections
                 sections.forEach(s => s.classList.remove('active'));
 
-                // Show selected section
                 const section = document.getElementById(sectionId);
                 if (section) {
                     section.classList.add('active');
+                    if (sectionId === 'projects') {
+                        renderProjects();
+                    }
                 }
             });
         });
@@ -621,7 +1031,10 @@
             window.location.href = '/admin/login.html';
         });
 
-        console.log('✅ Admin Dashboard chargé avec succès!');
+        // Initialize
+        initializeProjects();
+        renderProjects();
+        console.log('✅ Admin Dashboard CRUD loaded!');
     </script>
 </body>
 </html>
