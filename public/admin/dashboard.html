@@ -693,17 +693,34 @@
         <!-- CERTIFICATES SECTION -->
         <section id="certificates" class="section">
             <div class="header">
-                <h1>🏆 Certifications</h1>
+                <h1>🏆 Gestion des Certifications</h1>
                 <div class="header-actions">
-                    <button class="btn btn-primary">
-                        <i class="fas fa-plus"></i> Ajouter
+                    <button class="btn btn-primary" id="addCertificateBtn">
+                        <i class="fas fa-plus"></i> Nouvelle Certification
                     </button>
                 </div>
             </div>
-            <div class="chart-container">
-                <p style="color: var(--text-secondary); text-align: center; padding: 2rem;">
-                    🎓 Gestion des certifications - À développer
-                </p>
+
+            <div id="certificatesContainer" class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Titre</th>
+                            <th>Organisme</th>
+                            <th>Année</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="certificatesTableBody">
+                        <tr>
+                            <td colspan="5" class="empty-state">
+                                <i class="fas fa-inbox"></i><br/>
+                                Aucune certification. Créez-en une!
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </section>
 
@@ -838,6 +855,48 @@
                 </div>
                 <div class="form-actions">
                     <button type="button" class="btn-cancel" id="cancelFormBtn">Annuler</button>
+                    <button type="submit" class="btn-save">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- CERTIFICATE FORM MODAL -->
+    <div id="certificateFormModal" class="form-modal">
+        <div class="form-modal-content">
+            <div class="form-modal-header">
+                <h2 id="certificateFormTitle">Nouvelle Certification</h2>
+                <button class="form-modal-close" id="closeCertificateFormBtn">&times;</button>
+            </div>
+            <form id="certificateForm">
+                <div class="form-group">
+                    <label for="certificateTitle">Titre *</label>
+                    <input type="text" id="certificateTitle" required placeholder="ex: Blockchain Specialization" />
+                </div>
+                <div class="form-group">
+                    <label for="certificateOrganization">Organisme *</label>
+                    <input type="text" id="certificateOrganization" required placeholder="ex: Coursera" />
+                </div>
+                <div class="form-group">
+                    <label for="certificateYear">Année *</label>
+                    <input type="number" id="certificateYear" required placeholder="ex: 2024" min="2000" max="2099" />
+                </div>
+                <div class="form-group">
+                    <label for="certificateDescription">Description *</label>
+                    <textarea id="certificateDescription" required placeholder="Description de la certification..." style="height: 100px;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="certificateUrl">Lien de Vérification</label>
+                    <input type="url" id="certificateUrl" placeholder="https://..." />
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" id="certificateArchived" />
+                        <span>Archivé</span>
+                    </label>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="cancelCertificateFormBtn">Annuler</button>
                     <button type="submit" class="btn-save">Enregistrer</button>
                 </div>
             </form>
@@ -1000,6 +1059,134 @@
         document.getElementById('closeFormBtn').addEventListener('click', closeProjectForm);
         document.getElementById('cancelFormBtn').addEventListener('click', closeProjectForm);
 
+        // ============ CERTIFICATES CRUD ============
+        const CERTIFICATES_KEY = 'adminCertificates';
+
+        function initializeCertificates() {
+            const existing = localStorage.getItem(CERTIFICATES_KEY);
+            if (!existing) {
+                const defaultCertificates = [
+                    { id: 1, title: 'Blockchain Specialization', organization: 'Coursera', year: 2024, description: 'Specialization complète en technologie blockchain et contrats intelligents', url: 'https://coursera.org', archived: false },
+                    { id: 2, title: 'Solidity Advanced', organization: 'Udemy', year: 2024, description: 'Cours avancé Solidity avec focus sur sécurité et optimisations', url: 'https://udemy.com', archived: false },
+                    { id: 3, title: 'Smart Contracts Essentials', organization: 'Ethereum', year: 2023, description: 'Fundamentals of smart contracts development et best practices', url: 'https://ethereum.org', archived: false },
+                    { id: 4, title: 'Web3 Security', organization: 'OpenZeppelin', year: 2024, description: 'Sécurité avancée et audit des contrats intelligents', url: 'https://openzeppelin.com', archived: false }
+                ];
+                localStorage.setItem(CERTIFICATES_KEY, JSON.stringify(defaultCertificates));
+            }
+        }
+
+        function getCertificates() {
+            return JSON.parse(localStorage.getItem(CERTIFICATES_KEY) || '[]');
+        }
+
+        function saveCertificates(certificates) {
+            localStorage.setItem(CERTIFICATES_KEY, JSON.stringify(certificates));
+            renderCertificates();
+        }
+
+        function renderCertificates() {
+            const certificates = getCertificates().filter(c => !c.archived);
+            const tbody = document.getElementById('certificatesTableBody');
+
+            if (certificates.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="empty-state"><i class="fas fa-inbox"></i><br/>Aucune certification active</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = certificates.map(c => `
+                <tr>
+                    <td><strong>${c.title}</strong></td>
+                    <td>${c.organization}</td>
+                    <td>${c.year}</td>
+                    <td><small>${c.archived ? 'Archivé' : 'Actif'}</small></td>
+                    <td>
+                        <div class="project-actions">
+                            <button class="btn-small btn-small-cyan" onclick="editCertificate(${c.id})">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn-small btn-small-delete" onclick="deleteCertificate(${c.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        let currentCertificateId = null;
+
+        function openCertificateForm(certificateId = null) {
+            const modal = document.getElementById('certificateFormModal');
+            const title = document.getElementById('certificateFormTitle');
+            
+            if (certificateId) {
+                const certificates = getCertificates();
+                const certificate = certificates.find(c => c.id === certificateId);
+                if (certificate) {
+                    currentCertificateId = certificateId;
+                    title.textContent = 'Éditer Certification';
+                    document.getElementById('certificateTitle').value = certificate.title;
+                    document.getElementById('certificateOrganization').value = certificate.organization;
+                    document.getElementById('certificateYear').value = certificate.year;
+                    document.getElementById('certificateDescription').value = certificate.description;
+                    document.getElementById('certificateUrl').value = certificate.url || '';
+                    document.getElementById('certificateArchived').checked = certificate.archived;
+                }
+            } else {
+                currentCertificateId = null;
+                title.textContent = 'Nouvelle Certification';
+                document.getElementById('certificateForm').reset();
+            }
+            modal.classList.add('show');
+        }
+
+        function closeCertificateForm() {
+            document.getElementById('certificateFormModal').classList.remove('show');
+            currentCertificateId = null;
+        }
+
+        document.getElementById('certificateForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const certificates = getCertificates();
+            
+            const certificateData = {
+                title: document.getElementById('certificateTitle').value,
+                organization: document.getElementById('certificateOrganization').value,
+                year: parseInt(document.getElementById('certificateYear').value),
+                description: document.getElementById('certificateDescription').value,
+                url: document.getElementById('certificateUrl').value,
+                archived: document.getElementById('certificateArchived').checked
+            };
+
+            if (currentCertificateId) {
+                const idx = certificates.findIndex(c => c.id === currentCertificateId);
+                if (idx !== -1) {
+                    certificates[idx] = { ...certificates[idx], ...certificateData };
+                }
+            } else {
+                certificateData.id = Math.max(0, ...certificates.map(c => c.id)) + 1;
+                certificates.push(certificateData);
+            }
+
+            saveCertificates(certificates);
+            closeCertificateForm();
+        });
+
+        function editCertificate(id) {
+            openCertificateForm(id);
+        }
+
+        function deleteCertificate(id) {
+            if (confirm('Confirmer la suppression?')) {
+                const certificates = getCertificates().filter(c => c.id !== id);
+                saveCertificates(certificates);
+            }
+        }
+
+        document.getElementById('addCertificateBtn').addEventListener('click', () => openCertificateForm());
+        document.getElementById('closeCertificateFormBtn').addEventListener('click', closeCertificateForm);
+        document.getElementById('cancelCertificateFormBtn').addEventListener('click', closeCertificateForm);
+
         // ============ NAVIGATION ============
         const navLinks = document.querySelectorAll('.nav-link');
         const sections = document.querySelectorAll('.section');
@@ -1019,6 +1206,8 @@
                     section.classList.add('active');
                     if (sectionId === 'projects') {
                         renderProjects();
+                    } else if (sectionId === 'certificates') {
+                        renderCertificates();
                     }
                 }
             });
@@ -1034,6 +1223,8 @@
         // Initialize
         initializeProjects();
         renderProjects();
+        initializeCertificates();
+        renderCertificates();
         console.log('✅ Admin Dashboard CRUD loaded!');
     </script>
 </body>
