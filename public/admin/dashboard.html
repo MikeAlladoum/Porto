@@ -375,6 +375,28 @@
             color: white;
         }
 
+        .btn-filter {
+            padding: 0.5rem 1rem;
+            background: rgba(0, 217, 255, 0.1);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .btn-filter:hover {
+            background: rgba(0, 217, 255, 0.2);
+            color: var(--primary-cyan);
+        }
+
+        .btn-filter.active {
+            background: var(--primary-cyan);
+            color: var(--dark-bg);
+            border-color: var(--primary-cyan);
+        }
+
         /* ============ FORM STYLES ============ */
         .form-modal {
             display: none;
@@ -794,12 +816,44 @@
         <section id="testimonials" class="section">
             <div class="header">
                 <h1>⭐ Modération des Avis</h1>
-                <div class="header-actions"></div>
+                <div class="header-actions">
+                    <button id="addTestimonialBtn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Nouvel Avis
+                    </button>
+                </div>
             </div>
             <div class="chart-container">
-                <p style="color: var(--text-secondary); text-align: center; padding: 2rem;">
-                    💬 Approuver/Supprimer des avis - À développer
-                </p>
+                <div style="margin-bottom: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <button onclick="filterTestimonials('all')" class="btn-filter active">
+                        Tous
+                    </button>
+                    <button onclick="filterTestimonials('pending')" class="btn-filter">
+                        En Attente
+                    </button>
+                    <button onclick="filterTestimonials('approved')" class="btn-filter">
+                        Approuvés
+                    </button>
+                    <button onclick="filterTestimonials('rejected')" class="btn-filter">
+                        Rejetés
+                    </button>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Auteur</th>
+                            <th>Avis</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="testimonialTableBody">
+                        <tr>
+                            <td colspan="4" style="text-align: center; color: var(--text-secondary);">
+                                Aucun avis disponible
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </section>
 
@@ -1001,6 +1055,36 @@
                 <div class="form-actions">
                     <button type="button" class="btn-cancel" id="cancelCVFormBtn">Annuler</button>
                     <button type="submit" class="btn-save">Télécharger</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- TESTIMONIAL FORM MODAL -->
+    <div id="testimonialFormModal" class="form-modal">
+        <div class="form-modal-content">
+            <div class="form-modal-header">
+                <h2 id="testimonialFormTitle">Nouvel Avis</h2>
+                <button class="form-modal-close" id="closeTestimonialFormBtn">&times;</button>
+            </div>
+            <form id="testimonialForm">
+                <div class="form-group">
+                    <label for="testimonialAuthor">Auteur *</label>
+                    <input type="text" id="testimonialAuthor" required placeholder="ex: Prof. Jean-Pierre" />
+                </div>
+                <div class="form-group">
+                    <label for="testimonialText">Avis *</label>
+                    <textarea id="testimonialText" required placeholder="ex: Mike démontre un potentiel exceptionnel..." style="height: 100px;"></textarea>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" id="testimonialApproved" />
+                        <span>Approuvé</span>
+                    </label>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="cancelTestimonialFormBtn">Annuler</button>
+                    <button type="submit" class="btn-save">Enregistrer</button>
                 </div>
             </form>
         </div>
@@ -1572,6 +1656,184 @@
         document.getElementById('closeCVFormBtn').addEventListener('click', closeCVForm);
         document.getElementById('cancelCVFormBtn').addEventListener('click', closeCVForm);
 
+        // ============ TESTIMONIALS CRUD ============
+        const TESTIMONIALS_KEY = 'adminTestimonials';
+        let currentTestimonialFilter = 'all';
+
+        function initializeTestimonials() {
+            if (!localStorage.getItem(TESTIMONIALS_KEY)) {
+                const defaultTestimonials = [
+                    { id: 'test_1', author: 'Prof. Jean-Pierre', text: 'Mike démontre un potentiel exceptionnel en développement blockchain', status: 'approved' },
+                    { id: 'test_2', author: 'Sarah Mensah', text: 'Contrats intelligents, livraison fiable. Un développeur de confiance', status: 'approved' },
+                    { id: 'test_3', author: 'David Kofi', text: "L'un des développeurs les plus dévoués que je connaisse", status: 'approved' },
+                    { id: 'test_4', author: 'Dr. Amara Okafor', text: 'Futur leader dans les systèmes décentralisés', status: 'approved' },
+                    { id: 'test_5', author: 'Nouveau client', text: 'Avis en attente de modération', status: 'pending' }
+                ];
+                localStorage.setItem(TESTIMONIALS_KEY, JSON.stringify(defaultTestimonials));
+            }
+        }
+
+        function getTestimonials() {
+            return JSON.parse(localStorage.getItem(TESTIMONIALS_KEY) || '[]');
+        }
+
+        function saveTestimonials(testimonials) {
+            localStorage.setItem(TESTIMONIALS_KEY, JSON.stringify(testimonials));
+            renderTestimonials();
+        }
+
+        function renderTestimonials() {
+            const testimonials = getTestimonials();
+            const tbody = document.getElementById('testimonialTableBody');
+            
+            const filtered = currentTestimonialFilter === 'all' 
+                ? testimonials 
+                : testimonials.filter(t => t.status === currentTestimonialFilter);
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--text-secondary);">Aucun avis</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(t => {
+                const statusColor = t.status === 'approved' ? 'var(--primary-cyan)' : 
+                                  t.status === 'pending' ? 'var(--primary-purple)' : 'var(--primary-pink)';
+                const statusText = t.status === 'approved' ? 'Approuvé' : 
+                                 t.status === 'pending' ? 'En Attente' : 'Rejeté';
+                
+                return `
+                    <tr>
+                        <td><strong>${t.author}</strong></td>
+                        <td><span style="color: var(--text-secondary);">${t.text.substring(0, 50)}...</span></td>
+                        <td><span style="color: ${statusColor};">${statusText}</span></td>
+                        <td>
+                            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                ${t.status !== 'approved' ? `<button class="btn-small btn-small-cyan" onclick="approveTestimonial('${t.id}')">
+                                    <i class="fas fa-check"></i> Approuver
+                                </button>` : ''}
+                                ${t.status !== 'rejected' ? `<button class="btn-small" style="background: rgba(255,52,79,0.2); color: var(--primary-pink); border: 1px solid var(--primary-pink);" onclick="rejectTestimonial('${t.id}')">
+                                    <i class="fas fa-times"></i> Rejeter
+                                </button>` : ''}
+                                <button class="btn-small btn-small-edit" onclick="editTestimonial('${t.id}')">
+                                    <i class="fas fa-edit"></i> Modifier
+                                </button>
+                                <button class="btn-small btn-small-delete" onclick="deleteTestimonial('${t.id}')">
+                                    <i class="fas fa-trash"></i> Supprimer
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function filterTestimonials(filter) {
+            currentTestimonialFilter = filter;
+            
+            document.querySelectorAll('.btn-filter').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            renderTestimonials();
+        }
+
+        function openTestimonialForm(testimonialId = null) {
+            const modal = document.getElementById('testimonialFormModal');
+            const title = document.getElementById('testimonialFormTitle');
+            const authorInput = document.getElementById('testimonialAuthor');
+            const textInput = document.getElementById('testimonialText');
+            const approvedCheckbox = document.getElementById('testimonialApproved');
+
+            if (testimonialId) {
+                const testimonials = getTestimonials();
+                const testimonial = testimonials.find(t => t.id === testimonialId);
+                if (testimonial) {
+                    title.textContent = 'Modifier Avis';
+                    authorInput.value = testimonial.author;
+                    textInput.value = testimonial.text;
+                    approvedCheckbox.checked = testimonial.status === 'approved';
+                    document.getElementById('testimonialForm').dataset.id = testimonialId;
+                }
+            } else {
+                title.textContent = 'Nouvel Avis';
+                authorInput.value = '';
+                textInput.value = '';
+                approvedCheckbox.checked = false;
+                delete document.getElementById('testimonialForm').dataset.id;
+            }
+
+            modal.classList.add('show');
+        }
+
+        function closeTestimonialForm() {
+            document.getElementById('testimonialFormModal').classList.remove('show');
+        }
+
+        document.getElementById('testimonialForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const testimonials = getTestimonials();
+            const author = document.getElementById('testimonialAuthor').value;
+            const text = document.getElementById('testimonialText').value;
+            const approved = document.getElementById('testimonialApproved').checked;
+            const id = document.getElementById('testimonialForm').dataset.id;
+
+            if (id) {
+                // Edit
+                const index = testimonials.findIndex(t => t.id === id);
+                if (index > -1) {
+                    testimonials[index] = {
+                        ...testimonials[index],
+                        author,
+                        text,
+                        status: approved ? 'approved' : 'pending'
+                    };
+                }
+            } else {
+                // Create
+                testimonials.push({
+                    id: 'testimonial_' + Date.now(),
+                    author,
+                    text,
+                    status: approved ? 'approved' : 'pending'
+                });
+            }
+
+            saveTestimonials(testimonials);
+            closeTestimonialForm();
+        });
+
+        function editTestimonial(id) {
+            openTestimonialForm(id);
+        }
+
+        function approveTestimonial(id) {
+            const testimonials = getTestimonials();
+            const index = testimonials.findIndex(t => t.id === id);
+            if (index > -1) {
+                testimonials[index].status = 'approved';
+                saveTestimonials(testimonials);
+            }
+        }
+
+        function rejectTestimonial(id) {
+            const testimonials = getTestimonials();
+            const index = testimonials.findIndex(t => t.id === id);
+            if (index > -1) {
+                testimonials[index].status = 'rejected';
+                saveTestimonials(testimonials);
+            }
+        }
+
+        function deleteTestimonial(id) {
+            if (confirm('Confirmer la suppression de cet avis?')) {
+                const testimonials = getTestimonials().filter(t => t.id !== id);
+                saveTestimonials(testimonials);
+            }
+        }
+
+        document.getElementById('addTestimonialBtn').addEventListener('click', () => openTestimonialForm());
+        document.getElementById('closeTestimonialFormBtn').addEventListener('click', closeTestimonialForm);
+        document.getElementById('cancelTestimonialFormBtn').addEventListener('click', closeTestimonialForm);
+
         // ============ NAVIGATION ============
         const navLinks = document.querySelectorAll('.nav-link');
         const sections = document.querySelectorAll('.section');
@@ -1597,6 +1859,8 @@
                         renderEducation();
                     } else if (sectionId === 'cv') {
                         renderCVs();
+                    } else if (sectionId === 'testimonials') {
+                        renderTestimonials();
                     }
                 }
             });
@@ -1618,6 +1882,8 @@
         renderEducation();
         initializeCVs();
         renderCVs();
+        initializeTestimonials();
+        renderTestimonials();
         console.log('✅ Admin Dashboard CRUD loaded!');
     </script>
 </body>
